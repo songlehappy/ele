@@ -3,9 +3,11 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import './assets/css/reset.scss'
 import '../static/font-awesome-4.7.0/css/font-awesome.css'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
+import store from  './store'
 
 Vue.config.productionTip = false
 
@@ -14,5 +16,6 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
+  store,
   components: { App }
 })
