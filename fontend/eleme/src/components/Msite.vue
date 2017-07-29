@@ -1,9 +1,14 @@
 <template>
-  <Top></Top>
+  <div>
+     <Top></Top> 
+    <Bottom></Bottom>
+    <div @click="add">333</div>
+  </div>
 </template>
 
 <script>
-import  Top from './msite/Top.vue';
+import Top from './msite/Top.vue';
+import Bottom from './msite/Bottom';
 export default {
   name: 'Msite',
   data() {
@@ -11,8 +16,8 @@ export default {
       msg: ''
     }
   },
-  components:{
-    Top
+  components: {
+    Top, Bottom
   },
   mounted: function () {
     //获取当前经纬度代码
@@ -28,9 +33,16 @@ export default {
         alert('failed' + this.getStatus());
       }
     }, { enableHighAccuracy: true })//以上为获取经纬度代码
+
+    //------------------获取店面信息开始---------------------
+      console.log(this.$store.dispatch('getIndexShopData'));
+    //------------------获取店面信息结束---------------------
   },
   methods: {
-
+    add(){
+      console.log(11);
+      console.log(this.$store);
+    },
   }
 }
 </script>
