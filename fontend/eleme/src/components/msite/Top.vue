@@ -28,6 +28,7 @@
         </div>
     </header>
 </template>
+
 <script>
 export default {
     mounted: function () {

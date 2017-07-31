@@ -1,13 +1,15 @@
 <template>
-  <div>
+  <mt-loadmore ref="loadmore" :bottom-method="loadBottom" @bottom-status-change="handleBottomChange">
     <Top></Top>
     <LunBo></LunBo>
-  </div>
+    <Bottom></Bottom>
+  </mt-loadmore>
 </template>
 
 <script>
 import Top from './msite/Top.vue';
 import LunBo from './msite/LunBo.vue';
+import Bottom from './msite/Bottom';
 export default {
   name: 'Msite',
   data() {
@@ -16,12 +18,20 @@ export default {
     }
   },
   components: {
-    Top,LunBo
+    Top, LunBo,Bottom
   },
-  mounted: function () {
-  },
+  
   methods: {
-
+    //-------------上拉状态改变时触发，默认触发一次------------------
+    handleBottomChange(status) {
+      // console.log(111);
+      // console.log('bottom方法');
+    },
+    //-------------上拉已经促发时调用----此为调用ajax请求
+    loadBottom() {
+      this.$store.dispatch('getIndexShopData');
+      this.$refs.loadmore.onBottomLoaded();
+    }
   }
 }
 </script>

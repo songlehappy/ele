@@ -9,12 +9,20 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import store from  './store'
 
+import { Rate } from 'element-ui'
+Vue.use( Rate )
+// 引入美腿上下拉插件
+import { Loadmore } from 'mint-ui'
+Vue.component(Loadmore.name, Loadmore)
+
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   store,
   components: { App }
