@@ -18,36 +18,32 @@ export default new Router({
       component: Msite
     },
     {
-      path:'/discover',
-      name:'Discover',
-      component:Discover
-    },
-     {
-      path:'/profile',
-      name:'Discover',
-      component:Profile
-    },
-     {
-      path:'/order',
-      name:'Order',
-      component:Order
+      path: '/discover',
+      name: 'Discover',
+      component: Discover
     },
     {
-      path:"*",
-      redirect:"/msite/"
+      path: '/profile',
+      name: 'Discover',
+      component: Profile
+    },
+    {
+      path: '/order',
+      name: 'Order',
+      component: Order
     },
     //以下为详情页路由
     {
-      path:'/shop',
-      component:Shop,
+      path: '/shop',
+      component: Shop,
       //以下为详情页 子路由
-      children:[
+      children: [
         {
-          path:'goods',
+          path: 'goods',
           component: Goods
         },
         {
-          path:'comment',
+          path: 'comment',
           component: Comment
         },
         // {
@@ -55,6 +51,10 @@ export default new Router({
         //   component: Goods
         // }
       ]
-    }
+    },
+    {
+      path: "*",
+      redirect: "/msite/"
+    },
   ]
 })

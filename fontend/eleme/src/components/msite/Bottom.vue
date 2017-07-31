@@ -1,9 +1,8 @@
 <template>
     <div>
         <h3>推荐商家</h3>
-        <div class="index-container" :key="index" v-for="(item,index) in indexShopData">
+        <div class="index-container" :key="index" v-for="(item,index) in indexShopData" @click="goDetial(item.id)">
             <div class="index-logo">
-                <!-- {{item.image_path}} -->
                 <img :src="'https://fuss10.elemecdn.com/'+item.image_path+(/png$/.test(item.image_path)?'.png':'.jpeg')" :alt="item.name" />
             </div>
             <div class="index-main">
@@ -39,7 +38,7 @@
                             <i>{{str.icon_name}}</i>{{str.tips}}
                         </span>
                     </div>
-                    <div class="activeNum" v-if="item.activities.length>2?true:false" @click="changeActivity(index)">
+                    <div class="activeNum" v-if="item.activities.length>2?true:false" @click.stop="changeActivity(index)">
                         <span>{{item.activities.length}}个活动</span>
                         <svg class="" ref="icosvg">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#activity-more"></use>
@@ -58,24 +57,20 @@ export default {
     name: 'Bottom',
     data() {
         return {
-           
+
         }
     },
-    methods:{
-        // changeActivity(e){
-           
-            // var spanArr = e.target.parentNode.children[0].children;
-            // for(var i =0,spanNum = spanArr.length;i<spanNum;i++){
-            //     // spanArr[i].style.display = ;
-            // }
-
-        // },
+    methods: {
+        //去详情页
+        goDetial(id) {
+            window.open('http://localhost:8080/#/shop?id='+id,'_self');
+        },
         ...mapMutations({
             changeActivity: 'changeActivity',
         })
     },
     computed: {
-        ...mapState(['indexShopData','indexShopNum']),
+        ...mapState(['indexShopData', 'indexShopNum']),
         ...mapGetters({ 'pic': 'mixPic' })
     }
 }
@@ -174,9 +169,9 @@ h3 {
         line-height: 0.426667rem;
         font-size: 0.266667rem;
         color: #939393;
-        span{
+        span {
             display: block;
-            width:6rem;
+            width: 6rem;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
