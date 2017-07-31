@@ -35,11 +35,11 @@
                 </section>
                 <section>
                     <div class="activity">
-                        <span :key="num" v-for="(str, num) in item.activities" v-show="indexShopNum || num < 2 ">
+                        <span :key="num" v-for="(str, num) in item.activities" v-show="item.isActivity || num < 2 ">
                             <i>{{str.icon_name}}</i>{{str.tips}}
                         </span>
                     </div>
-                    <div class="activeNum" v-if="item.activities.length>2?true:false" @click="changeActivity($event)">
+                    <div class="activeNum" v-if="item.activities.length>2?true:false" @click="changeActivity(index)">
                         <span>{{item.activities.length}}个活动</span>
                         <svg class="" ref="icosvg">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#activity-more"></use>

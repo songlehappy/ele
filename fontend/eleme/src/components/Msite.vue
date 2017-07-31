@@ -1,9 +1,8 @@
 <template>
-  <div>
-     <Top></Top> 
+  <mt-loadmore ref="loadmore" :bottom-method="loadBottom" @bottom-status-change="handleBottomChange">
+    <Top></Top>
     <Bottom></Bottom>
-    <div @click="add">333</div>
-  </div>
+  </mt-loadmore>
 </template>
 
 <script>
@@ -35,36 +34,27 @@ export default {
     }, { enableHighAccuracy: true })//以上为获取经纬度代码
 
     //------------------获取店面信息开始---------------------
-      console.log(this.$store.dispatch('getIndexShopData'));
+    this.$store.dispatch('getIndexShopData');
     //------------------获取店面信息结束---------------------
+
+
   },
   methods: {
-    add(){
-      console.log(11);
-      console.log(this.$store);
+    //-------------上拉状态改变时触发，默认触发一次------------------
+    handleBottomChange(status) {
+      // console.log(111);
+      // console.log('bottom方法');
     },
+    //-------------上拉已经促发时调用----此为调用ajax请求
+    loadBottom() {
+      this.$store.dispatch('getIndexShopData');
+      this.$refs.loadmore.onBottomLoaded();
+    }
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1,
-h2 {
-  font-weight: normal;
-}
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
 </style>

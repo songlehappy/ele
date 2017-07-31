@@ -8,8 +8,8 @@ export default new Vuex.Store({
     state: {
         //------------index店面信息---------------
         indexShopData: [],
-        //------------index店面活动信息个数---------------
-        indexShopNum: false,
+        //------------信息个数---------------
+        // indexShopNum: false,
 
     },
 
@@ -18,17 +18,15 @@ export default new Vuex.Store({
         getIndexShopData(state, data) {
             // console.log(data);                   //actions中  ajax请求获取的数据
             state.indexShopData = state.indexShopData.concat(data);
-            // console.log(state.indexShopData)
+            
         },
         //--------获取index店面信息结束-----------
 
-        // //--------开始----------
-        changeActivity(state,e) {
-           state.indexShopNum = !state.indexShopNum;
-        console.log(e.target.parentNode.children[0]);
-            
+        // //--------index店面活动的开关开始----------
+        changeActivity(state,index) {
+            state.indexShopData[index].isActivity = !state.indexShopData[index].isActivity;
         }
-        // //--------结束-----------
+        // //--------index店面活动的开关结束-----------
     },
 
     getters: {
@@ -45,6 +43,11 @@ export default new Vuex.Store({
                 if (res && res.status === 200) {
                     // console.log(res.data);
                     var data = res.data;
+                    //循环遍历添加一个首页店面活动的开关
+                    for(var i = 0 ,len = data.length;i < len;i++){
+                        data[i].isActivity = false;        
+                    }
+                    // console.log(data)
                     context.commit('getIndexShopData', data);       //提交给mutations
                 }
 

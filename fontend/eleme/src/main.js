@@ -10,6 +10,9 @@ import 'mint-ui/lib/style.css'
 import './assets/css/reset.css'
 import { Rate } from 'element-ui'
 Vue.use( Rate )
+// 引入美腿上下拉插件
+import { Loadmore } from 'mint-ui'
+Vue.component(Loadmore.name, Loadmore)
 
 Vue.config.productionTip = false
 
