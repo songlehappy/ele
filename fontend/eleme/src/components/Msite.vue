@@ -1,9 +1,13 @@
 <template>
-  <Top></Top>
+  <div>
+    <Top></Top>
+    <LunBo></LunBo>
+  </div>
 </template>
 
 <script>
-import  Top from './msite/Top.vue';
+import Top from './msite/Top.vue';
+import LunBo from './msite/LunBo.vue';
 export default {
   name: 'Msite',
   data() {
@@ -11,8 +15,8 @@ export default {
       msg: ''
     }
   },
-  components:{
-    Top
+  components: {
+    Top,LunBo
   },
   mounted: function () {
   },

@@ -5,19 +5,26 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        point: {
-            lng: "",
-            lat: ""
-        }
+        point: "",
+        weather: {},
+        keyWords: [],
+        foodList:[]
     },
 
     mutations: {
         GETLD: function (state, pointr) {
-            if (pointr) {
-                state.point.lng = pointr.lng;
-                state.point.lat = pointr.lat;
-            }
-
+            state.point = pointr;
+        },
+        GETWE: function (state, weather) {
+            // console.log(weather);
+            state.weather = { ...weather };
+        },
+        GETKEY: function (state, keyWords) {
+            //console.log(123);
+            state.keyWords = keyWords;
+        },
+        GETFOOD:function(state,foodList){
+            console.log(foodList);
         }
     },
 
@@ -25,8 +32,58 @@ export default new Vuex.Store({
 
     },
     actions: {
-        getLocation(context) {
+        getLocation(context, data) {
+            var latitude = data.rl.lat;
+            var longitude = data.rl.lng;
+            axios.get('https://mainsite-restapi.ele.me/bgs/poi/reverse_geo_coding?latitude=' + latitude + '&longitude=' + longitude)
+                .then(function (response) {
+                    context.commit("GETLD", response.data.name);
+                })
+                .catch(function (err) {
+                    context.commit("GETLD", "西丽创客小镇(16栋)");
+                });
+        },
+        getWeather(context, data) {
+            var latitude = data.rl.lat;
+            var longitude = data.rl.lng;
+            axios.get('https://mainsite-restapi.ele.me/bgs/weather/current?latitude=' + latitude + '&longitude=' + longitude)
+                .then(function (response) {
+                    context.commit("GETWE", response.data);
+                })
+                .catch(function (err) {
+                    context.commit("GETWE", {
+                        "temperature": 30,
+                        "code": "CLOUDY",
+                        "description": "阴",
+                        "image_hash": "37319e992e612e983f517e2690cb3e16png"
+                    }
+                    )
+                });
 
+        },
+        getHotKey(context, data) {
+            var latitude = data.rl.lat;
+            var longitude = data.rl.lng;
+            axios.get('https://mainsite-restapi.ele.me/shopping/v3/hot_search_words?latitude=' + latitude + '&longitude=' + longitude)
+                .then(function (response) {
+                    context.commit("GETKEY", response.data);
+
+                })
+                .catch(function (err) {
+                    console.log("123");
+                });
+
+        },
+        getFood(context, data) {
+            var latitude = data.rl.lat;
+            var longitude = data.rl.lng;
+            axios.get('https://mainsite-restapi.ele.me/shopping/v2/entries?latitude=' + latitude + '&longitude=' + longitude+"&templates[]=main_template")
+                .then(function (response) {
+                    context.commit("GETFOOD", response.data);
+                })
+                .catch(function (err) {
+                    console.log("123");
+                });
         },
         getTude(context) {
             //获取当前经纬度代码
@@ -37,9 +94,21 @@ export default new Vuex.Store({
             geolocation.getCurrentPosition(function (r) {
                 if (this.getStatus() == BMAP_STATUS_SUCCESS) {
                     var mk = new BMap.Marker(r.point);
-                    console.log(r.point);
-                    context.commit('GETLD', {
-                        ...r.point
+                    context.dispatch({
+                        type: "getHotKey",
+                        rl: { ...r.point }
+                    });
+                    context.dispatch({
+                        type: "getLocation",
+                        rl: { ...r.point }
+                    });
+                    context.dispatch({
+                        type: "getWeather",
+                        rl: { ...r.point }
+                    });
+                    context.dispatch({
+                        type:"getFood",
+                        rl: { ...r.point }
                     })
                 }
                 else {
