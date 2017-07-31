@@ -3,11 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import store from './store'
+import './assets/css/reset.scss'
 import '../static/font-awesome-4.7.0/css/font-awesome.css'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
-import './assets/css/reset.css'
+import store from  './store'
+
 import { Rate } from 'element-ui'
 Vue.use( Rate )
 // 引入美腿上下拉插件
@@ -23,5 +24,6 @@ new Vue({
   router,
   store,
   template: '<App/>',
+  store,
   components: { App }
 })
