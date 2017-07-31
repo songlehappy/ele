@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Msite from '@/components/Msite'
-
+//以下为shop所需组件
+import Shop from '@/components/Shop'
+import Goods from '@/components/shop/Goods'
+import Comment from '@/components/shop/Comment'
 Vue.use(Router)
 
 export default new Router({
@@ -14,6 +17,26 @@ export default new Router({
     {
       path:"*",
       redirect:"/msite/"
+    },
+    //以下为详情页路由
+    {
+      path:'/shop',
+      component:Shop,
+      //以下为详情页 子路由
+      children:[
+        {
+          path:'goods',
+          component: Goods
+        },
+        {
+          path:'comment',
+          component: Comment
+        },
+        {
+          path:'/*',
+          component: Goods
+        }
+      ]
     }
   ]
 })

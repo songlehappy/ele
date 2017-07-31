@@ -14,6 +14,7 @@ Vue.use( Rate )
 import { Loadmore } from 'mint-ui'
 Vue.component(Loadmore.name, Loadmore)
 
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
