@@ -13,10 +13,54 @@ router.all('*', function (req, res, next) {
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
-router.get('/index1', function (res, res, next) {
+
+
+
+
+router.get('/foodlist', function (req, res, next) {
+  var lg=req.query.latitude;
+  var lt=req.query.longitude;
   var dataStr="";
-  var r
-  https.get('https://mainsite-restapi.ele.me/shopping/v2/entries?latitude=22.555259&longitude=113.884019&templates[]=main_template', (response) => {
+  https.get('https://mainsite-restapi.ele.me/shopping/v2/entries?latitude='+lg+'&longitude='+lt+'&templates[]=main_template', (response) => {
+    response.on('data', (d) => {
+        dataStr=dataStr+d;   
+    });
+    response.on('end',()=>{
+      res.send(dataStr);
+    })
+  })
+});
+router.get('/hotkey', function (req, res, next) {
+  var lg=req.query.latitude;
+  var lt=req.query.longitude;
+  var dataStr="";
+  https.get('https://mainsite-restapi.ele.me/shopping/v3/hot_search_words?latitude=' + lg + '&longitude=' + lt, (response) => {
+    response.on('data', (d) => {
+        dataStr=dataStr+d;   
+    });
+    response.on('end',()=>{
+      res.send(dataStr);
+    })
+  })
+});
+router.get('/weather', function (req, res, next) {
+  var lg=req.query.latitude;
+  var lt=req.query.longitude;
+  var dataStr="";
+  https.get('https://mainsite-restapi.ele.me/bgs/weather/current?latitude=' + lg + '&longitude=' + lt, (response) => {
+    response.on('data', (d) => {
+        dataStr=dataStr+d;   
+    });
+    response.on('end',()=>{
+      res.send(dataStr);
+    })
+  })
+});
+router.get('/location', function (req, res, next) {
+  var lg=req.query.latitude;
+  var lt=req.query.longitude;
+  var dataStr="";
+  https.get('https://mainsite-restapi.ele.me/bgs/poi/reverse_geo_coding?latitude=' + lg + '&longitude=' + lt, (response) => {
     response.on('data', (d) => {
         dataStr=dataStr+d;   
     });

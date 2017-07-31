@@ -25,6 +25,7 @@ export default new Vuex.Store({
         },
         GETFOOD:function(state,foodList){
             console.log(foodList);
+            state.foodList=foodList;
         }
     },
 
@@ -35,7 +36,7 @@ export default new Vuex.Store({
         getLocation(context, data) {
             var latitude = data.rl.lat;
             var longitude = data.rl.lng;
-            axios.get('https://mainsite-restapi.ele.me/bgs/poi/reverse_geo_coding?latitude=' + latitude + '&longitude=' + longitude)
+            axios.get('http://localhost:3000/location?latitude=' + latitude + '&longitude=' + longitude)
                 .then(function (response) {
                     context.commit("GETLD", response.data.name);
                 })
@@ -46,7 +47,7 @@ export default new Vuex.Store({
         getWeather(context, data) {
             var latitude = data.rl.lat;
             var longitude = data.rl.lng;
-            axios.get('https://mainsite-restapi.ele.me/bgs/weather/current?latitude=' + latitude + '&longitude=' + longitude)
+            axios.get('http://localhost:3000/weather?latitude=' + latitude + '&longitude=' + longitude)
                 .then(function (response) {
                     context.commit("GETWE", response.data);
                 })
@@ -64,7 +65,7 @@ export default new Vuex.Store({
         getHotKey(context, data) {
             var latitude = data.rl.lat;
             var longitude = data.rl.lng;
-            axios.get('https://mainsite-restapi.ele.me/shopping/v3/hot_search_words?latitude=' + latitude + '&longitude=' + longitude)
+            axios.get('http://localhost:3000/hotkey?latitude=' + latitude + '&longitude=' + longitude)
                 .then(function (response) {
                     context.commit("GETKEY", response.data);
 
@@ -77,7 +78,7 @@ export default new Vuex.Store({
         getFood(context, data) {
             var latitude = data.rl.lat;
             var longitude = data.rl.lng;
-            axios.get('https://mainsite-restapi.ele.me/shopping/v2/entries?latitude=' + latitude + '&longitude=' + longitude+"&templates[]=main_template")
+            axios.get('http://localhost:3000/foodlist?latitude=' + latitude + '&longitude=' + longitude)
                 .then(function (response) {
                     context.commit("GETFOOD", response.data);
                 })
