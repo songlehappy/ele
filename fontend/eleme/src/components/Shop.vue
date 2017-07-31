@@ -9,7 +9,7 @@
                     </svg>
                 </router-link>
             </div>
-            <div class="shop-content">
+            <div class="shop-content" @click="goShop()">
                 <img src="https://fuss10.elemecdn.com/1/94/20fab1f210839ac1121cf7740906cjpeg.jpeg" alt="">
                 <div class="shop-intrduce">
                     <div>学府店</div>
@@ -17,7 +17,7 @@
                     <div>公告</div>
                 </div>
             </div>
-            <div class="shop-activity">
+            <div class="shop-activity" @click="goActivity()">
                 <span>
                     <i>新</i>新用户下单立减27.0元(不与其它活动同享)</span>
                 <span>6个活动</span>
@@ -39,6 +39,14 @@ export default {
             active: 'tab-container2',
         }
     },
+    methods:{
+        goShop(){
+            console.log(1);
+        },
+        goActivity(){
+            console.log(2);
+        }
+    }
 }
 </script>
 

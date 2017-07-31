@@ -48,6 +48,7 @@ export default new Vuex.Store({
                         data[i].isActivity = false;        
                     }
                     // console.log(data)
+                    
                     context.commit('getIndexShopData', data);       //提交给mutations
                 }
 
