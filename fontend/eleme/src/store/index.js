@@ -139,7 +139,7 @@ export default new Vuex.Store({
             }, { enableHighAccuracy: true })//以上为获取经纬度代码
         },
         getIndexShopData(context) {
-            axios.get('https://mainsite-restapi.ele.me/shopping/restaurants?latitude=22.533012&longitude=113.930475&offset=20&limit=20&extras[]=activities&terminal=h5').then(function (res) {
+            axios.get('http://localhost:3000/indexshopdata').then(function (res) {
                 if (res && res.status === 200) {
                     // console.log(res.data);
                     var data = res.data;
@@ -148,6 +148,7 @@ export default new Vuex.Store({
                         data[i].isActivity = false;
                     }
                     // console.log(data)
+                    
                     context.commit('getIndexShopData', data);       //提交给mutations
                 }
 

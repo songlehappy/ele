@@ -10,6 +10,8 @@
 import Top from './msite/Top.vue';
 import LunBo from './msite/LunBo.vue';
 import Bottom from './msite/Bottom';
+// 引入辅助函数mapstate
+import { mapState } from 'vuex'
 export default {
   name: 'Msite',
   data() {
@@ -18,13 +20,13 @@ export default {
     }
   },
   components: {
-    Top, LunBo,Bottom
+    Top, LunBo, Bottom
   },
-  mounted: function () {
-    //获取当前经纬度代码
-    //------------------获取店面信息开始---------------------
-    this.$store.dispatch('getIndexShopData');
-    //------------------获取店面信息结束---------------------
+  mounted() {
+    if(this.indexShopData.length===0){    //数据为空时才发送请求
+      this.$store.dispatch('getIndexShopData');
+    }
+
   },
   methods: {
     //-------------上拉状态改变时触发，默认触发一次------------------
@@ -37,7 +39,10 @@ export default {
       this.$store.dispatch('getIndexShopData');
       this.$refs.loadmore.onBottomLoaded();
     }
-  }
+  },
+  computed: {
+        ...mapState(['indexShopData']),
+    }
 }
 </script>
 

@@ -69,5 +69,18 @@ router.get('/location', function (req, res, next) {
     })
   })
 });
+//index店面信息http://localhost:3000/indxeshopdata
+router.get('/indexshopdata', function (req, res, next) {
+
+  var dataStr="";
+  https.get('https://mainsite-restapi.ele.me/shopping/restaurants?latitude=22.533012&longitude=113.930475&offset=20&limit=20&extras[]=activities&terminal=h5', (response) => {
+    response.on('data', (d) => {
+        dataStr=dataStr+d;   
+    });
+    response.on('end',()=>{
+      res.send(dataStr);
+    })
+  })
+});
 
 module.exports = router;
