@@ -83,7 +83,6 @@ router.get('/indexshopdata', function (req, res, next) {
   })
 });
 
-<<<<<<< HEAD
 router.get('/shopsort',function(req,res,next){
   var dataStr="";
   var lg=req.query.latitude;
@@ -97,7 +96,6 @@ router.get('/shopsort',function(req,res,next){
     })
   })
 })
-=======
 //shop店面商品信息http://localhost:3000/shopdetial
 router.get('/shopgoods', function (req, res, next) {
   var id = req.query.id;
@@ -170,5 +168,4 @@ router.get('/shoptag', function (req, res, next) {
     })
   })
 });
->>>>>>> d40be7a78e735b07149b5407c5d4cc3e9cae55e8
 module.exports = router;

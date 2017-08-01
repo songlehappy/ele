@@ -57,8 +57,7 @@ export default new Router({
         {
             path: '/shop/:id',
             components: {
-                Body: Shop,
-                Footer: Profile  
+                Body: Shop,  
             },
             //以下为详情页 子路由
             children: [
