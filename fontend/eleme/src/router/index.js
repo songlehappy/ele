@@ -8,6 +8,8 @@ import Order from '@/components/Order'
 import Shop from '@/components/Shop'
 import Goods from '@/components/shop/Goods'
 import Comment from '@/components/shop/Comment'
+import LinkR from '@/components/FRouter.vue'
+import LDetail from '@/components/LDetail.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -15,27 +17,49 @@ export default new Router({
         {
             path: '/msite',
             name: 'Msite',
-            component: Msite
+            components: {
+                Body: Msite,
+                Footer: LinkR
+            }
         },
         {
             path: '/discover',
             name: 'Discover',
-            component: Discover
+            components: {
+                Body: Discover,
+                Footer: LinkR
+            }
         },
         {
             path: '/profile',
-            name: 'Discover',
-            component: Profile
+            name: 'Profile',
+            components: {
+                Body: Profile,
+                Footer: LinkR
+            }
         },
         {
             path: '/order',
             name: 'Order',
-            component: Order
+            components: {
+                Body: Order,
+                Footer: LinkR 
+            }
+        },
+        {
+            path: '/LDetail/:Id',
+            name: 'LDetail',
+            components: {
+                Body: LDetail,
+            }
         },
         //以下为详情页路由
         {
             path: '/shop/:id',
-            component: Shop,
+            components: {
+                Body: Shop,
+                Footer: Profile  
+            },
             //以下为详情页 子路由
             children: [
                 {

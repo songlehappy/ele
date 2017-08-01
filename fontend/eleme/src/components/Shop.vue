@@ -24,8 +24,8 @@
             </div>
         </div>
         <div class="shop-tab">
-            <a href="#/shop/goods"><span>商品</span></a>
-            <a href="#/shop/comment"><span>评价</span></a>
+            <a :href="'#/shop/'+id+'/goods'"><span>商品</span></a>
+            <a :href="'#/shop/'+id+'/comment'"><span>评价</span></a>
         </div>
         <router-view></router-view>
     </div>
@@ -37,6 +37,7 @@ export default {
     data() {
         return {
             active: 'tab-container2',
+            id:this.$route.params.id 
         }
     },
     mounted: function(){

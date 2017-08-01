@@ -1,17 +1,14 @@
 <template>
   <div id="app">
-    <router-view></router-view>
-    <Discover></Discover>
+    <router-view name="Body"></router-view>
+    <router-view name="Footer"></router-view>
   </div>
 </template>
 
 <script>
-import Discover from './components/FRouter.vue'
+
 export default {
   name: 'app',
-  components:{
-    Discover
-  }
 }
 </script>
 

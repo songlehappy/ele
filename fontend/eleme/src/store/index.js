@@ -9,8 +9,10 @@ export default new Vuex.Store({
         weather: {},
         keyWords: [],
         foodList: [],
+        location:{lng:'',lat:''},
         //------------index店面信息---------------
         indexShopData: [],
+        sortShopList:[],
         //------------信息个数---------------
         // indexShopNum: false,
     },
@@ -18,6 +20,9 @@ export default new Vuex.Store({
     mutations: {
         GETLD: function (state, pointr) {
             state.point = pointr;
+        },
+        SETSORTLS:function(state,data){
+            state.sortShopList=data;    
         },
         GETWE: function (state, weather) {
             // console.log(weather);
@@ -95,7 +100,18 @@ export default new Vuex.Store({
                 .catch(function (err) {
                     console.log("123");
                 });
-
+        },
+        getSortShop(context) {
+            var latitude = context.state.location.lat;
+            var longitude = context.state.location.lng;
+            axios.get('http://localhost:3000/shopsort?latitude=' + latitude + '&longitude=' + longitude)
+            .then(function (res) {
+                //console.log(res);
+                context.commit('SETSORTLS',res.data);
+            })
+            .catch(function(err){
+                console.log("123");
+            })
         },
         getFood(context, data) {
             var latitude = data.rl.lat;
@@ -117,6 +133,7 @@ export default new Vuex.Store({
             geolocation.getCurrentPosition(function (r) {
                 if (this.getStatus() == BMAP_STATUS_SUCCESS) {
                     var mk = new BMap.Marker(r.point);
+                    context.state.location={...r.point};
                     context.dispatch({
                         type: "getHotKey",
                         rl: { ...r.point }
@@ -148,7 +165,7 @@ export default new Vuex.Store({
                         data[i].isActivity = false;
                     }
                     // console.log(data)
-                    
+
                     context.commit('getIndexShopData', data);       //提交给mutations
                 }
 

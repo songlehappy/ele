@@ -83,4 +83,17 @@ router.get('/indexshopdata', function (req, res, next) {
   })
 });
 
+router.get('/shopsort',function(req,res,next){
+  var dataStr="";
+  var lg=req.query.latitude;
+  var lt=req.query.longitude;
+  https.get("https://mainsite-restapi.ele.me/shopping/v2/restaurant/category?latitude="+lg+"&longitude="+lt,function(response){
+    response.on('data',(d)=>{
+      dataStr=dataStr+d;
+    });
+    response.on('end',()=>{
+      res.send(dataStr);
+    })
+  })
+})
 module.exports = router;

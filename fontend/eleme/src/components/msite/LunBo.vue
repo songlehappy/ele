@@ -2,7 +2,7 @@
     <div>
         <mt-swipe :show-indicators="true" :continuous="true" :auto="0">
             <mt-swipe-item v-for="(item,key) in foodList.list" :key='key'>
-                <a href="javascript:" v-for="(im,ke) in foodList.list[key]" :key="ke+key">
+                <a :href="im.link|productLink" v-for="(im,ke) in foodList.list[key]" :key="ke+key">
                     <div class="container">
                         <img :src="im.image_hash|imgSrc">
                     </div>
@@ -19,6 +19,9 @@ Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 export default {
     filters: {
+        productLink:function(link){
+            return link.replace('eleme://restaurants?','#/LDetail/');
+        },
         imgSrc: function (src) {
             if (/jpeg/.test(src)) {
                 return "//fuss10.elemecdn.com/" + src.substr(0, 1) + "/" + src.substr(1, 2) + "/" + src.substr(3) + ".jpeg?imageMogr/format/webp/thumbnail/!90x90r/gravity/Center/crop/90x90/";
@@ -31,12 +34,13 @@ export default {
         foodList: function () {
             var getList = this.$store.state.foodList[0];
             if (getList) {
+                console.log(getList);
                 var length = Math.ceil(getList.entries.length / 8);
                 var list = new Array(length);
                 for (let i = 0; i < length; i++) {
                     list[i] = getList.entries.slice(8 * i, 8 * i + 8);
                 }
-                console.log(list);
+                // console.log(list);
                 return { list: list, length: list };
             } else {
                 return {
