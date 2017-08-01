@@ -39,6 +39,9 @@ export default {
             active: 'tab-container2',
         }
     },
+    mounted: function(){
+        console.log(this.$route.params.id )
+    },
     methods:{
         goShop(){
             console.log(1);
