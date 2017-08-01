@@ -23,7 +23,7 @@ export default {
     Top, LunBo, Bottom
   },
   mounted() {
-    if(this.indexShopData.length===0){    //数据为空时才发送请求
+    if (this.indexShopData.length === 0) {    //数据为空时才发送请求
       this.$store.dispatch('getIndexShopData');
     }
 
@@ -41,8 +41,8 @@ export default {
     }
   },
   computed: {
-        ...mapState(['indexShopData']),
-    }
+    ...mapState(['indexShopData']),
+  }
 }
 </script>
 

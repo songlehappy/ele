@@ -11,8 +11,16 @@ export default new Vuex.Store({
         foodList: [],
         //------------index店面信息---------------
         indexShopData: [],
-        //------------信息个数---------------
-        // indexShopNum: false,
+        //--------------shop店面头部信息-------------
+        shopHead: '',
+        //--------------shop商品信息-------------
+        shopGoods: [],
+        //--------------shop评论信息-------------
+        shopComment: [],
+        //--------------shop评论score信息-------------
+        shopScore: '',
+        //--------------shop评论tag信息-------------
+        shopTag: '',
     },
 
     mutations: {
@@ -28,7 +36,7 @@ export default new Vuex.Store({
             state.keyWords = keyWords;
         },
         GETFOOD: function (state, foodList) {
-            console.log(foodList);
+            // console.log(foodList);
             state.foodList = foodList;
         },
         //--------获取index店面信息开始----------
@@ -42,8 +50,43 @@ export default new Vuex.Store({
         // //--------index店面活动的开关开始----------
         changeActivity(state, index) {
             state.indexShopData[index].isActivity = !state.indexShopData[index].isActivity;
-        }
+        },
         // //--------index店面活动的开关结束-----------
+        //--------获取shop店面头部信息开始----------
+        getShopHeadData(state, data) {
+            // console.log(data);                   //actions中  ajax请求获取的数据
+            state.shopHead = data;
+
+        },
+        //--------获取shop店面头部信息结束-----------
+        //--------获取shop店面商品信息开始----------
+        getShopGoodsData(state, data) {
+            // console.log(data);                   //actions中  ajax请求获取的数据
+            state.shopGoods = data;
+
+        },
+        //--------获取shop店面商品信息结束-----------
+        //--------获取shop店面评论信息开始----------
+        getShopCommentData(state, data) {
+            // console.log(data);                   //actions中  ajax请求获取的数据
+            state.shopComment = data;
+
+        },
+        //--------获取shop店面评论信息结束-----------
+        //--------获取shop店面score信息开始----------
+        getShopScoreData(state, data) {
+            // console.log(data);                   //actions中  ajax请求获取的数据
+            state.shopScore = data;
+
+        },
+        //--------获取shop店面score信息结束-----------
+        //--------获取shop店面tag信息开始----------
+        getShopTagData(state, data) {
+            // console.log(data);                   //actions中  ajax请求获取的数据
+            state.shopTag = data;
+
+        },
+        //--------获取shop店面tag信息结束-----------
     },
 
 
@@ -147,12 +190,71 @@ export default new Vuex.Store({
                     for (var i = 0, len = data.length; i < len; i++) {
                         data[i].isActivity = false;
                     }
-                    // console.log(data)
-                    
+                    // console.log(data)//data为对象
+
                     context.commit('getIndexShopData', data);       //提交给mutations
                 }
 
             })
-        }
+        },
+        //请求店面头部信息
+        getShopHeadData(context, id) {
+            axios.get('http://localhost:3000/shophead?id=' + id).then(function (res) {
+                if (res && res.status === 200) {
+                    // console.log(res.data);
+                    var data = res.data;
+                    // console.log(data)
+                    context.commit('getShopHeadData', data);       //提交给mutations
+                }
+            })
+        },
+        //请求店面商品信息
+        getShopGoodsData(context, id) {
+            // console.log(id, 111);
+            axios.get('http://localhost:3000/shopgoods?id=' + id).then(function (res) {
+                if (res && res.status === 200) {
+                    // console.log(res.data);
+                    var data = res.data;
+                    // console.log(data)
+                    context.commit('getShopGoodsData', data);       //提交给mutations
+                }
+            })
+        },
+        //请求店面评论信息
+        getShopCommentData(context, id) {
+            // console.log(id, 111);
+            axios.get('http://localhost:3000/shopcomment?id=' + id).then(function (res) {
+                if (res && res.status === 200) {
+                    // console.log(res.data);
+                    var data = res.data;
+                    // console.log(data)
+                    context.commit('getShopCommentData', data);       //提交给mutations
+                }
+            })
+        },
+        //请求店面score信息
+        getShopScoreData(context, id) {
+            // console.log(id, 111);
+            axios.get('http://localhost:3000/shopscore?id=' + id).then(function (res) {
+                if (res && res.status === 200) {
+                    // console.log(res.data);
+                    var data = res.data;
+                    // console.log(data)
+                    context.commit('getShopScoreData', data);       //提交给mutations
+                }
+            })
+        },
+        //请求店面tag信息
+        getShopTagData(context, id) {
+            // console.log(id, 111);
+            axios.get('http://localhost:3000/shoptag?id=' + id).then(function (res) {
+                if (res && res.status === 200) {
+                    // console.log(res.data);
+                    var data = res.data;
+                    // console.log(data)
+                    context.commit('getShopTagData', data);       //提交给mutations
+                }
+            })
+        },
     }
 })

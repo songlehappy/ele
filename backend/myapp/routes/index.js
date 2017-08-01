@@ -18,53 +18,53 @@ router.get('/', function (req, res, next) {
 
 
 router.get('/foodlist', function (req, res, next) {
-  var lg=req.query.latitude;
-  var lt=req.query.longitude;
-  var dataStr="";
-  https.get('https://mainsite-restapi.ele.me/shopping/v2/entries?latitude='+lg+'&longitude='+lt+'&templates[]=main_template', (response) => {
+  var lg = req.query.latitude;
+  var lt = req.query.longitude;
+  var dataStr = "";
+  https.get('https://mainsite-restapi.ele.me/shopping/v2/entries?latitude=' + lg + '&longitude=' + lt + '&templates[]=main_template', (response) => {
     response.on('data', (d) => {
-        dataStr=dataStr+d;   
+      dataStr = dataStr + d;
     });
-    response.on('end',()=>{
+    response.on('end', () => {
       res.send(dataStr);
     })
   })
 });
 router.get('/hotkey', function (req, res, next) {
-  var lg=req.query.latitude;
-  var lt=req.query.longitude;
-  var dataStr="";
+  var lg = req.query.latitude;
+  var lt = req.query.longitude;
+  var dataStr = "";
   https.get('https://mainsite-restapi.ele.me/shopping/v3/hot_search_words?latitude=' + lg + '&longitude=' + lt, (response) => {
     response.on('data', (d) => {
-        dataStr=dataStr+d;   
+      dataStr = dataStr + d;
     });
-    response.on('end',()=>{
+    response.on('end', () => {
       res.send(dataStr);
     })
   })
 });
 router.get('/weather', function (req, res, next) {
-  var lg=req.query.latitude;
-  var lt=req.query.longitude;
-  var dataStr="";
+  var lg = req.query.latitude;
+  var lt = req.query.longitude;
+  var dataStr = "";
   https.get('https://mainsite-restapi.ele.me/bgs/weather/current?latitude=' + lg + '&longitude=' + lt, (response) => {
     response.on('data', (d) => {
-        dataStr=dataStr+d;   
+      dataStr = dataStr + d;
     });
-    response.on('end',()=>{
+    response.on('end', () => {
       res.send(dataStr);
     })
   })
 });
 router.get('/location', function (req, res, next) {
-  var lg=req.query.latitude;
-  var lt=req.query.longitude;
-  var dataStr="";
+  var lg = req.query.latitude;
+  var lt = req.query.longitude;
+  var dataStr = "";
   https.get('https://mainsite-restapi.ele.me/bgs/poi/reverse_geo_coding?latitude=' + lg + '&longitude=' + lt, (response) => {
     response.on('data', (d) => {
-        dataStr=dataStr+d;   
+      dataStr = dataStr + d;
     });
-    response.on('end',()=>{
+    response.on('end', () => {
       res.send(dataStr);
     })
   })
@@ -72,40 +72,85 @@ router.get('/location', function (req, res, next) {
 //index店面信息http://localhost:3000/indxeshopdata
 router.get('/indexshopdata', function (req, res, next) {
 
-  var dataStr="";
+  var dataStr = "";
   https.get('https://mainsite-restapi.ele.me/shopping/restaurants?latitude=22.533012&longitude=113.930475&offset=10&limit=10&extras[]=activities&terminal=h5', (response) => {
     response.on('data', (d) => {
-        dataStr=dataStr+d;   
+      dataStr = dataStr + d;
     });
-    response.on('end',()=>{
+    response.on('end', () => {
       res.send(dataStr);
     })
   })
 });
 
-//shop店面详情信息http://localhost:3000/shopdetial
-router.get('/shopdetial', function (req, res, next) {
-
-  var dataStr="";
-  https.get('https://mainsite-restapi.ele.me/shopping/v2/menu?restaurant_id=861698', (response) => {
+//shop店面商品信息http://localhost:3000/shopdetial
+router.get('/shopgoods', function (req, res, next) {
+  var id = req.query.id;
+  var dataStr = "";
+  https.get('https://mainsite-restapi.ele.me/shopping/v2/menu?restaurant_id=' + id, (response) => {
     response.on('data', (d) => {
-        dataStr=dataStr+d;   
+      dataStr = dataStr + d;
     });
-    response.on('end',()=>{
+    response.on('end', () => {
       res.send(dataStr);
     })
   })
 });
 
-//shop店面上部分信息http://localhost:3000/shopcomment
+//shop店面品论信息http://localhost:3000/shopdetial
+router.get('/shopcomment', function (req, res, next) {
+  var id = req.query.id;
+  var dataStr = "";
+  https.get('https://mainsite-restapi.ele.me/ugc/v2/restaurants/' + id + '/ratings?has_content=true&offset=0&limit=10', (response) => {
+    response.on('data', (d) => {
+      dataStr = dataStr + d;
+    });
+    response.on('end', () => {
+      res.send(dataStr);
+    })
+  })
+});
+
+//shop店面上部分信息http://localhost:3000/shophead
 router.get('/shophead', function (req, res, next) {
-
-  var dataStr="";
-  https.get('https://mainsite-restapi.ele.me/shopping/restaurant/861698?extras[]=activities&extras[]=albums&extras[]=license&extras[]=identification&latitude=22.555259&longitude=113.884019', (response) => {
+  // console.log(req.query)
+  var id = req.query.id;
+  var dataStr = "";
+  https.get('https://mainsite-restapi.ele.me/shopping/restaurant/' + id + '?extras[]=activities&extras[]=albums&extras[]=license&extras[]=identification&latitude=22.555259&longitude=113.884019', (response) => {
     response.on('data', (d) => {
-        dataStr=dataStr+d;   
+      dataStr = dataStr + d;
     });
-    response.on('end',()=>{
+    response.on('end', () => {
+      res.send(dataStr);
+    })
+  })
+});
+
+//shop店面score信息http://localhost:3000/shopscore
+router.get('/shopscore', function (req, res, next) {
+  // console.log(req.query)
+  var id = req.query.id;
+  var dataStr = "";
+  https.get('https://mainsite-restapi.ele.me/ugc/v2/restaurants/' + id + '/ratings/scores', (response) => {
+    response.on('data', (d) => {
+      dataStr = dataStr + d;
+    });
+    response.on('end', () => {
+      res.send(dataStr);
+    })
+  })
+});
+
+//shop店面tag信息http://localhost:3000/shoptag
+router.get('/shoptag', function (req, res, next) {
+  // console.log(req.query)
+  var id = req.query.id;
+  var dataStr = "";
+  https.get('https://mainsite-restapi.ele.me/ugc/v2/restaurants/' + id + '/ratings/tags', (response) => {
+    response.on('data', (d) => {
+      dataStr = dataStr + d;
+    });
+    response.on('end', () => {
       res.send(dataStr);
     })
   })

@@ -11,50 +11,50 @@ import Comment from '@/components/shop/Comment'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/msite',
-      name: 'Msite',
-      component: Msite
-    },
-    {
-      path: '/discover',
-      name: 'Discover',
-      component: Discover
-    },
-    {
-      path: '/profile',
-      name: 'Discover',
-      component: Profile
-    },
-    {
-      path: '/order',
-      name: 'Order',
-      component: Order
-    },
-    //以下为详情页路由
-    {
-      path: '/shop/:id',
-      component: Shop,
-      //以下为详情页 子路由
-      children: [
+    routes: [
         {
-          path: 'goods',
-          component: Goods
+            path: '/msite',
+            name: 'Msite',
+            component: Msite
         },
         {
-          path: 'comment',
-          component: Comment
+            path: '/discover',
+            name: 'Discover',
+            component: Discover
         },
         {
-          path:'/',
-          redirect: Goods
-        }
-      ]
-    },
-    {
-      path: "*",
-      redirect: "/msite/"
-    },
-  ]
+            path: '/profile',
+            name: 'Discover',
+            component: Profile
+        },
+        {
+            path: '/order',
+            name: 'Order',
+            component: Order
+        },
+        //以下为详情页路由
+        {
+            path: '/shop/:id',
+            component: Shop,
+            //以下为详情页 子路由
+            children: [
+                {
+                    path: 'goods',
+                    component: Goods
+                },
+                {
+                    path: 'comment',
+                    component: Comment
+                },
+                {
+                    path: '/',
+                    redirect: "goods"
+                }
+            ]
+        },
+        {
+            path: "*",
+            redirect: "/msite/"
+        },
+    ]
 })
