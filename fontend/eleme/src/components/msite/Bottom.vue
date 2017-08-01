@@ -63,7 +63,7 @@ export default {
     methods: {
         //去详情页
         goDetial(id) {
-            window.open('http://localhost:8080/#/shop?id='+id,'_self');
+            window.open('http://localhost:8080/#/shop/'+id+'?id='+id,'_self');
         },
         ...mapMutations({
             changeActivity: 'changeActivity',

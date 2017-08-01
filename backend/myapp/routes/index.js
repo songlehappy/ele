@@ -73,7 +73,7 @@ router.get('/location', function (req, res, next) {
 router.get('/indexshopdata', function (req, res, next) {
 
   var dataStr="";
-  https.get('https://mainsite-restapi.ele.me/shopping/restaurants?latitude=22.533012&longitude=113.930475&offset=20&limit=20&extras[]=activities&terminal=h5', (response) => {
+  https.get('https://mainsite-restapi.ele.me/shopping/restaurants?latitude=22.533012&longitude=113.930475&offset=10&limit=10&extras[]=activities&terminal=h5', (response) => {
     response.on('data', (d) => {
         dataStr=dataStr+d;   
     });
@@ -83,4 +83,31 @@ router.get('/indexshopdata', function (req, res, next) {
   })
 });
 
+//shop店面详情信息http://localhost:3000/shopdetial
+router.get('/shopdetial', function (req, res, next) {
+
+  var dataStr="";
+  https.get('https://mainsite-restapi.ele.me/shopping/v2/menu?restaurant_id=861698', (response) => {
+    response.on('data', (d) => {
+        dataStr=dataStr+d;   
+    });
+    response.on('end',()=>{
+      res.send(dataStr);
+    })
+  })
+});
+
+//shop店面上部分信息http://localhost:3000/shopcomment
+router.get('/shophead', function (req, res, next) {
+
+  var dataStr="";
+  https.get('https://mainsite-restapi.ele.me/shopping/restaurant/861698?extras[]=activities&extras[]=albums&extras[]=license&extras[]=identification&latitude=22.555259&longitude=113.884019', (response) => {
+    response.on('data', (d) => {
+        dataStr=dataStr+d;   
+    });
+    response.on('end',()=>{
+      res.send(dataStr);
+    })
+  })
+});
 module.exports = router;

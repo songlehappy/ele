@@ -34,7 +34,7 @@ export default new Router({
     },
     //以下为详情页路由
     {
-      path: '/shop',
+      path: '/shop/:id',
       component: Shop,
       //以下为详情页 子路由
       children: [
@@ -46,10 +46,10 @@ export default new Router({
           path: 'comment',
           component: Comment
         },
-        // {
-        //   path:'/*',
-        //   component: Goods
-        // }
+        {
+          path:'/',
+          redirect: Goods
+        }
       ]
     },
     {
