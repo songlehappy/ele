@@ -1,9 +1,9 @@
 <template>
 
     <div class="index-footer_Gtduid_">
-        <a href="#/msite" class="index-footerTab_bl0lbJN">
-            <svg class="index-footerTabIcon_1EbB8wS">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#index.18edf5a"></use>
+        <a href="#/msite" class="index-footerTab_bl0lbJN" :active="tag" @click="change()">
+            <svg class="index-footerTabIcon_1EbB8wS"  v-if="tag">
+                <use  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#index.18edf5a"></use>
             </svg>
             <span class="index-footerTabText_1It8yh0 index-footerTabTextActive_3gjOLc6">
                 外卖
@@ -36,7 +36,19 @@
     </div>
 </template>
 <script>
-    
+    export default{
+        data:function(){
+            return {
+                tag:false
+            }
+        },
+        methods:{
+            change(){
+                console.log(11);
+              this.tag=!this.tag;
+            }
+        }
+    }
 </script>
 <style scoped>
 

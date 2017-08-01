@@ -20,7 +20,12 @@ export default {
   components: {
     Top, LunBo,Bottom
   },
-  
+  mounted: function () {
+    //获取当前经纬度代码
+    //------------------获取店面信息开始---------------------
+    this.$store.dispatch('getIndexShopData');
+    //------------------获取店面信息结束---------------------
+  },
   methods: {
     //-------------上拉状态改变时触发，默认触发一次------------------
     handleBottomChange(status) {
