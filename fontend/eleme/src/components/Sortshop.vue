@@ -16,8 +16,8 @@
                         </h3>
                         <div class="index-supportWrap_VWrQG">
                             <div class="activity-container_2EaDo_0 activity-containerNoWrap_2zBBg_0">
-                                <i class="activity-activityIcon_1iJyG_0 activity-icononly_3QM3P_0" style="color: rgb(153, 153, 153); border-color: rgb(221, 221, 221);">
-                                    票
+                                <i v-for="(v,k) in item.supports" :key="k+'s'" class="activity-activityIcon_1iJyG_0 activity-icononly_3QM3P_0" :style="{color:'#'+v.icon_color,borderColor:'rgb(221, 221, 221)'}">
+                                    {{v.icon_name}}
                                 </i>
                                 <!---->
                             </div>
@@ -43,7 +43,7 @@
                                         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating-star"></use>
                                     </svg>
                                 </div>
-                                <div class="rating-rating_1ZAfX_0" style="width: 90%;">
+                                <div class="rating-rating_1ZAfX_0" :style="parseInt(item.rating/5*100)+'%'">
                                     <svg>
                                         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating-star"></use>
                                     </svg>
@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                             <span class="index-rate_2O_yP">4.5</span>
-                            <span>月售375单</span>
+                            <span>月售{{item.recent_order_num}}单</span>
                         </div>
                         <div class="index-deliveryWrap_1Q_ky">
                             <!---->
@@ -71,7 +71,7 @@
                     </section>
                     <section class="index-line_1Zyr1">
                         <div class="index-moneylimit_1xDf3">
-                            <span>¥25起送</span>
+                            <span>¥{{item.float_delivery_fee}}起送</span>
                             <span>
                                 免配送费
                             </span>
