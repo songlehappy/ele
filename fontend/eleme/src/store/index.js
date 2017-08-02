@@ -5,14 +5,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        delist1: [],
+        delist2: [],
         point: "",
         weather: {},
         keyWords: [],
         foodList: [],
-        location:{lng:'',lat:''},
+        location: { lng: '', lat: '' },
         //------------index店面信息---------------
         indexShopData: [],
-        sortShopList:[],
+        sortShopList: [],
         //------------信息个数---------------
         // indexShopNum: false,
         //--------------shop店面头部信息-------------
@@ -25,14 +27,21 @@ export default new Vuex.Store({
         shopScore: '',
         //--------------shop评论tag信息-------------
         shopTag: '',
+        //-----筛选信息-----
+        sortShopList:[],
+
+        orderShopList:[],
+        sortShopId:'',
+        sortShopOffset:0,
     },
 
     mutations: {
+       
         GETLD: function (state, pointr) {
             state.point = pointr;
         },
-        SETSORTLS:function(state,data){
-            state.sortShopList=data;    
+        SETSORTLS: function (state, data) {
+            state.sortShopList = data;
         },
         GETWE: function (state, weather) {
             // console.log(weather);
@@ -45,6 +54,12 @@ export default new Vuex.Store({
         GETFOOD: function (state, foodList) {
             // console.log(foodList);
             state.foodList = foodList;
+        },
+        DELIST1: function (state, data) {
+            state.delist1 = data;
+        },
+        DELIST2: function (state, data) {
+            state.delist2 = data;
         },
         //--------获取index店面信息开始----------
         getIndexShopData(state, data) {
@@ -105,6 +120,22 @@ export default new Vuex.Store({
         //--------对index店面信息的图片做处理结束-----------
     },
     actions: {
+        storeSortId:function(context,id){
+            context.state.sortShopId=id;
+            context.state.sortShopOffset=0;
+            context.state.orderShopList=[];
+            context.dispatch('updateSortList');
+        },
+        updateSortList:function(context){
+            axios.get('http://localhost:3000/sortshop?id='+context.state.sortShopId+'&offset='+context.state.sortShopOffset)
+                .then(function (response) {
+                   context.state.sortShopOffset+=20;
+                    context.state.orderShopList=context.state.orderShopList.concat(response.data);
+                })
+                .catch(function (err) {
+                    console.log(123);
+                });
+        },
         getLocation(context, data) {
             var latitude = data.rl.lat;
             var longitude = data.rl.lng;
@@ -134,6 +165,30 @@ export default new Vuex.Store({
                 });
 
         },
+        getDeliver(context) {
+            var latitude = context.state.location.lat;
+            var longitude = context.state.location.lng;
+            axios.get('http://localhost:3000/deliver?latitude=' + latitude + '&longitude=' + longitude)
+                .then(function (res) {
+                    console.log(res);
+                    context.commit('DELIST1', res.data);
+                })
+                .catch(function (err) {
+                    console.log("123");
+                })
+        },
+        getDeliver2(context) {
+            var latitude = context.state.location.lat;
+            var longitude = context.state.location.lng;
+            axios.get('http://localhost:3000/deliver2?latitude=' + latitude + '&longitude=' + longitude)
+                .then(function (res) {
+                    console.log(res);
+                    context.commit('DELIST2', res.data);
+                })
+                .catch(function (err) {
+                    console.log("123");
+                })
+        },
         getHotKey(context, data) {
             var latitude = data.rl.lat;
             var longitude = data.rl.lng;
@@ -150,13 +205,13 @@ export default new Vuex.Store({
             var latitude = context.state.location.lat;
             var longitude = context.state.location.lng;
             axios.get('http://localhost:3000/shopsort?latitude=' + latitude + '&longitude=' + longitude)
-            .then(function (res) {
-                //console.log(res);
-                context.commit('SETSORTLS',res.data);
-            })
-            .catch(function(err){
-                console.log("123");
-            })
+                .then(function (res) {
+                    //console.log(res);
+                    context.commit('SETSORTLS', res.data);
+                })
+                .catch(function (err) {
+                    console.log("123");
+                })
         },
         getFood(context, data) {
             var latitude = data.rl.lat;
@@ -178,7 +233,7 @@ export default new Vuex.Store({
             geolocation.getCurrentPosition(function (r) {
                 if (this.getStatus() == BMAP_STATUS_SUCCESS) {
                     var mk = new BMap.Marker(r.point);
-                    context.state.location={...r.point};
+                    context.state.location = { ...r.point };
                     context.dispatch({
                         type: "getHotKey",
                         rl: { ...r.point }

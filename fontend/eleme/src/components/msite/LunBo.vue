@@ -108,4 +108,5 @@ export default {
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
 }
+
 </style>
