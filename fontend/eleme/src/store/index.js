@@ -9,10 +9,10 @@ export default new Vuex.Store({
         weather: {},
         keyWords: [],
         foodList: [],
-        location:{lng:'',lat:''},
+        location: { lng: '', lat: '' },
         //------------index店面信息---------------
         indexShopData: [],
-        sortShopList:[],
+        sortShopList: [],
         //------------信息个数---------------
         // indexShopNum: false,
         //--------------shop店面头部信息-------------
@@ -31,8 +31,8 @@ export default new Vuex.Store({
         GETLD: function (state, pointr) {
             state.point = pointr;
         },
-        SETSORTLS:function(state,data){
-            state.sortShopList=data;    
+        SETSORTLS: function (state, data) {
+            state.sortShopList = data;
         },
         GETWE: function (state, weather) {
             // console.log(weather);
@@ -94,6 +94,20 @@ export default new Vuex.Store({
 
         },
         //--------获取shop店面tag信息结束-----------
+        //--------改变shopfood数量开始----------
+        plusShopFoodCount(state, obj) {
+            // console.log(obj);                   //actions中  ajax请求获取的数据
+            var index = obj.index;
+            var num = obj.num;
+            state.shopGoods[index].foods[num].origin_count++;
+
+        },
+        minusShopFoodCount(state, obj) {
+            var index = obj.index;
+            var num = obj.num;
+            state.shopGoods[index].foods[num].origin_count--;
+        }
+        //--------改变shopfood数量结束-----------
     },
 
 
@@ -150,13 +164,13 @@ export default new Vuex.Store({
             var latitude = context.state.location.lat;
             var longitude = context.state.location.lng;
             axios.get('http://localhost:3000/shopsort?latitude=' + latitude + '&longitude=' + longitude)
-            .then(function (res) {
-                //console.log(res);
-                context.commit('SETSORTLS',res.data);
-            })
-            .catch(function(err){
-                console.log("123");
-            })
+                .then(function (res) {
+                    //console.log(res);
+                    context.commit('SETSORTLS', res.data);
+                })
+                .catch(function (err) {
+                    console.log("123");
+                })
         },
         getFood(context, data) {
             var latitude = data.rl.lat;
@@ -178,7 +192,7 @@ export default new Vuex.Store({
             geolocation.getCurrentPosition(function (r) {
                 if (this.getStatus() == BMAP_STATUS_SUCCESS) {
                     var mk = new BMap.Marker(r.point);
-                    context.state.location={...r.point};
+                    context.state.location = { ...r.point };
                     context.dispatch({
                         type: "getHotKey",
                         rl: { ...r.point }
@@ -234,15 +248,21 @@ export default new Vuex.Store({
                 if (res && res.status === 200) {
                     // console.log(res.data);
                     var data = res.data;
-                    // console.log(data)
+                    // 循环添加一个初始购买数量
+                    for (var i = 0, num1 = data.length; i < num1; i++) {
+                        for (var j = 0, num2 = data[i].foods.length; j < num2; j++) {
+                            data[i].foods[j].origin_count = 0;
+                        }
+                    }
                     context.commit('getShopGoodsData', data);       //提交给mutations
                 }
             })
         },
         //请求店面评论信息
-        getShopCommentData(context, id) {
-            // console.log(id, 111);
-            axios.get('http://localhost:3000/shopcomment?id=' + id).then(function (res) {
+        getShopCommentData(context, obj) {
+            var str = obj.str;
+            var id = obj.id;
+            axios.get('http://localhost:3000/shopcomment?id=' + id + '&str=' + str).then(function (res) {
                 if (res && res.status === 200) {
                     // console.log(res.data);
                     var data = res.data;

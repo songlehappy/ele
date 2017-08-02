@@ -83,15 +83,15 @@ router.get('/indexshopdata', function (req, res, next) {
   })
 });
 
-router.get('/shopsort',function(req,res,next){
-  var dataStr="";
-  var lg=req.query.latitude;
-  var lt=req.query.longitude;
-  https.get("https://mainsite-restapi.ele.me/shopping/v2/restaurant/category?latitude="+lg+"&longitude="+lt,function(response){
-    response.on('data',(d)=>{
-      dataStr=dataStr+d;
+router.get('/shopsort', function (req, res, next) {
+  var dataStr = "";
+  var lg = req.query.latitude;
+  var lt = req.query.longitude;
+  https.get("https://mainsite-restapi.ele.me/shopping/v2/restaurant/category?latitude=" + lg + "&longitude=" + lt, function (response) {
+    response.on('data', (d) => {
+      dataStr = dataStr + d;
     });
-    response.on('end',()=>{
+    response.on('end', () => {
       res.send(dataStr);
     })
   })
@@ -113,8 +113,9 @@ router.get('/shopgoods', function (req, res, next) {
 //shop店面品论信息http://localhost:3000/shopdetial
 router.get('/shopcomment', function (req, res, next) {
   var id = req.query.id;
+  var str = encodeURIComponent(req.query.str);
   var dataStr = "";
-  https.get('https://mainsite-restapi.ele.me/ugc/v2/restaurants/' + id + '/ratings?has_content=true&offset=0&limit=10', (response) => {
+  https.get('https://mainsite-restapi.ele.me/ugc/v2/restaurants/' + id + '/ratings?has_content=true&tag_name=' + str + '&offset=0&limit=20', (response) => {
     response.on('data', (d) => {
       dataStr = dataStr + d;
     });
