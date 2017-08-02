@@ -33,6 +33,10 @@ export default new Vuex.Store({
         orderShopList:[],
         sortShopId:'',
         sortShopOffset:0,
+        //--------------------热门搜索信息---------------------
+        hotSearch: [],
+        //--------------------搜索结果页面信息--------------------
+        searchpage: []
     },
 
     mutations: {
@@ -60,7 +64,22 @@ export default new Vuex.Store({
         },
         DELIST2: function (state, data) {
             state.delist2 = data;
+             },
+        GETSEARCH: function (state, hotSearch) {
+            state.hotSearch = hotSearch.data;
+            console.log(state.hotSearch)
         },
+        GETPAGE: function (state, searchpage) {
+            
+            console.log(searchpage.data);
+
+            for (var key in searchpage.data) {
+                state.searchpage = searchpage.data[key].restaurant_with_foods;
+            }
+
+        },
+            // console.log(state.searchpage)
+       
         //--------获取index店面信息开始----------
         getIndexShopData(state, data) {
             // console.log(data);                   //actions中  ajax请求获取的数据
@@ -238,6 +257,26 @@ export default new Vuex.Store({
                     console.log("123");
                 });
         },
+        getSearch(context, data) {
+            axios.get('http://localhost:3000/search')
+                .then(function (response) {
+                    context.commit("GETSEARCH", response);
+                })
+                .catch(function (err) {
+                    console.log("123");
+                });
+        },
+        getSearchpage(context, name) {
+            axios.get('http://localhost:3000/searchpage?name=' + name)
+                .then(function (response) {
+                    console.log(response);
+                    context.commit("GETPAGE", response);
+                })
+                .catch(function (err) {
+                    console.log(err);
+                    console.log("没有拿到");
+                });
+        },            
         getTude(context) {
             //获取当前经纬度代码
             console.log('touch commit');

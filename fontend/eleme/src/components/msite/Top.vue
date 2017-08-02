@@ -18,7 +18,7 @@
                 <img alt="天气图标" class="index-wRPUE" :src="getWI" />
             </aside>
         </div>
-        <a href="/search/#/">
+        <a href="#/Search">
             <input type="text" placeholder="搜索商家、商品" aria-label="搜索商家、商品" class="index-20Oji">
         </a>
         <div class="index-1NhZ1">

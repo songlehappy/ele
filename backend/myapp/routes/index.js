@@ -210,4 +210,36 @@ router.get('/sortshop', function (req, res, next) {
     })
 });
 
+  // console.log(req.query)
+router.get('/search', function (req, res, next) {
+  var dataStr="";
+  var r
+  https.get('https://mainsite-restapi.ele.me/shopping/v3/hot_search_words?geohash=ws103phuxtbb4&latitude=22.5832008&longitude=113.9570414', (response) => {
+    response.on('data', (d) => {
+        dataStr=dataStr+d;   
+    });
+    response.on('end',()=>{
+      res.send(dataStr);
+    })
+  })
+});
+router.get('/searchpage', function (req, res, next) {
+  var name = encodeURIComponent(req.query.name);
+  console.log(name);
+  var dataStr="";
+  var r;
+  var url = "https://mainsite-restapi.ele.me/shopping/v1/restaurants/search?offset=0&limit=20&keyword=" + name + "&latitude=22.583177&longitude=113.9569768&search_item_type=2&extra[]=activities";
+
+  https.get(url, (response) => {
+    response.on('data', (d) => {
+        dataStr=dataStr+d;   
+    });
+    response.on('end',()=>{
+      res.send(dataStr);
+    });
+    response.on('error', (err) => {
+      console.log(err)
+    })
+  })
+});
 module.exports = router;

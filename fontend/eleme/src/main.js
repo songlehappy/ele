@@ -13,6 +13,7 @@ import { Rate, Badge } from 'element-ui'
 Vue.use(Rate)
 Vue.use(Badge)
 // // 引入美腿上下拉插件
+import dem from '@/components/dem'
 import { Loadmore, } from 'mint-ui'
 Vue.component(Loadmore.name, Loadmore)
 

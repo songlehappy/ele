@@ -3,11 +3,11 @@
         <div class="shop-top" v-if="flag">
             <div class="bg-pic" :style="'background-image: url(https://fuss10.elemecdn.com/'+shopHead.image_path+(/png$/.test(shopHead.image_path)?'.png':'.jpeg')+'?imageMogr/format/webp/thumbnail/!40p/blur/50x40/)'"></div>
             <div class="back-index">
-                <router-link to="/">
+                <a href="JavaScript:history.go(-1)">
                     <svg>
                         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-left"></use>
                     </svg>
-                </router-link>
+                </a>
             </div>
             <div class="shop-content" @click="goShop()">
                 <img :src="'https://fuss10.elemecdn.com/'+shopHead.image_path+(/png$/.test(shopHead.image_path)?'.png':'.jpeg')" :alt="shopHead.name">
@@ -46,6 +46,7 @@
 <script>
 // 引入辅助函数mapstate
 import { mapState } from 'vuex'
+import { Loading } from 'element-ui';
 export default {
     name: 'Shop',
     data() {
@@ -54,9 +55,18 @@ export default {
             active: 'tab-container2',
             id: '',
             underline: 0,
+            fullscreenLoading: false,
         }
     },
+
     mounted: function () {
+        let loadingInstance = Loading.service();
+        // 页面加载等待时间
+
+        setTimeout(function () {
+            loadingInstance.close()
+        }, 1000)
+
         this.id = this.$route.params.id;
         var id = this.id;
         // console.log(this.$route.params.id )
