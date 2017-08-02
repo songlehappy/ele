@@ -109,6 +109,20 @@ export default new Vuex.Store({
 
         },
         //--------获取shop店面tag信息结束-----------
+        //--------改变shopfood数量开始----------
+        plusShopFoodCount(state, obj) {
+            // console.log(obj);                   //actions中  ajax请求获取的数据
+            var index = obj.index;
+            var num = obj.num;
+            state.shopGoods[index].foods[num].origin_count++;
+
+        },
+        minusShopFoodCount(state, obj) {
+            var index = obj.index;
+            var num = obj.num;
+            state.shopGoods[index].foods[num].origin_count--;
+        }
+        //--------改变shopfood数量结束-----------
     },
 
 
@@ -289,15 +303,21 @@ export default new Vuex.Store({
                 if (res && res.status === 200) {
                     // console.log(res.data);
                     var data = res.data;
-                    // console.log(data)
+                    // 循环添加一个初始购买数量
+                    for (var i = 0, num1 = data.length; i < num1; i++) {
+                        for (var j = 0, num2 = data[i].foods.length; j < num2; j++) {
+                            data[i].foods[j].origin_count = 0;
+                        }
+                    }
                     context.commit('getShopGoodsData', data);       //提交给mutations
                 }
             })
         },
         //请求店面评论信息
-        getShopCommentData(context, id) {
-            // console.log(id, 111);
-            axios.get('http://localhost:3000/shopcomment?id=' + id).then(function (res) {
+        getShopCommentData(context, obj) {
+            var str = obj.str;
+            var id = obj.id;
+            axios.get('http://localhost:3000/shopcomment?id=' + id + '&str=' + str).then(function (res) {
                 if (res && res.status === 200) {
                     // console.log(res.data);
                     var data = res.data;

@@ -140,18 +140,18 @@ router.get('/shopgoods', function (req, res, next) {
 
 //shop店面品论信息http://localhost:3000/shopdetial
 router.get('/shopcomment', function (req, res, next) {
-    var id = req.query.id;
-    var dataStr = "";
-    https.get('https://mainsite-restapi.ele.me/ugc/v2/restaurants/' + id + '/ratings?has_content=true&offset=0&limit=10', (response) => {
-        response.on('data', (d) => {
-            dataStr = dataStr + d;
-        });
-        response.on('end', () => {
-            res.send(dataStr);
-        })
+  var id = req.query.id;
+  var str = encodeURIComponent(req.query.str);
+  var dataStr = "";
+  https.get('https://mainsite-restapi.ele.me/ugc/v2/restaurants/' + id + '/ratings?has_content=true&tag_name=' + str + '&offset=0&limit=20', (response) => {
+    response.on('data', (d) => {
+      dataStr = dataStr + d;
+    });
+    response.on('end', () => {
+      res.send(dataStr);
     })
+})
 });
-
 //shop店面上部分信息http://localhost:3000/shophead
 router.get('/shophead', function (req, res, next) {
     // console.log(req.query)
@@ -208,5 +208,6 @@ router.get('/sortshop', function (req, res, next) {
             res.send(dataStr);
         })    
     })
-})
+});
+
 module.exports = router;

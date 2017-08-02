@@ -32,11 +32,11 @@
             </div>
         </div>
         <div class="shop-tab">
-            <a :href="'#/shop/'+id+'/goods'">
-                <span>商品</span>
+            <a :href="'#/shop/'+id+'/goods'" @click="addUnderline(0)">
+                <span :class="{'under-line':underline===0}">商品</span>
             </a>
-            <a :href="'#/shop/'+id+'/comment'">
-                <span>评价</span>
+            <a :href="'#/shop/'+id+'/comment'" @click="addUnderline(1)">
+                <span :class="{'under-line':underline===1}">评价</span>
             </a>
         </div>
         <router-view></router-view>
@@ -53,6 +53,7 @@ export default {
             flag: false,
             active: 'tab-container2',
             id: '',
+            underline: 0,
         }
     },
     mounted: function () {
@@ -62,7 +63,7 @@ export default {
         //传入id获取店面头部信息--商品信息--品论信息
         this.$store.dispatch('getShopHeadData', id);
         this.$store.dispatch('getShopGoodsData', id);
-        this.$store.dispatch('getShopCommentData', id);
+        // this.$store.dispatch('getShopCommentData', id);
         //以下为判定shopHead数据是否传过来？
         var that = this;
         this.timer = setInterval(function () {
@@ -81,6 +82,9 @@ export default {
         goActivity() {
             console.log(2);
         },
+        addUnderline(num) {
+            this.underline = num;
+        }
     },
     computed: {
         //得到状态信息
@@ -180,6 +184,20 @@ export default {
         flex: 1;
         display: flex;
         justify-content: center;
+    }
+}
+
+.under-line {
+    color: #3190e8;
+    position: relative;
+    &:after {
+        content: '';
+        position: absolute;
+        height: 0.1rem;
+        left: 0;
+        right: 0;
+        bottom: 0.1rem;
+        background: #3190e8;
     }
 }
 
