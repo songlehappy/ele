@@ -81,16 +81,9 @@ export default new Vuex.Store({
             }
 
         },
-<<<<<<< HEAD
-        CACS:function(state,key){
-            state.orderShopList[key].isshow=!state.orderShopList[key].isshow
-        },
-            // console.log(state.searchpage)
-=======
         CHANGE:function(state){
             state.searchpage=[];
         },
->>>>>>> 4e97e860a2f38a43bb70d66f5b79ab1216255e2c
        
         //--------获取index店面信息开始----------
         getIndexShopData(state, data) {

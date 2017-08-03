@@ -113,21 +113,7 @@ import { InfiniteScroll } from 'mint-ui';
 import Vue from 'vue';
 Vue.use(InfiniteScroll);
 export default {
-<<<<<<< HEAD
-    filters:{
-
-        Km:function(data){
-            if(data<1000)
-            {
-                return data.toFixed(2)+"m";
-            }
-            else{
-                return (data/1000).toFixed(2)+"km";
-            }
-        },
-=======
     filters: {
->>>>>>> 4e97e860a2f38a43bb70d66f5b79ab1216255e2c
         imgSrc: function (src) {
             if (/jpeg/.test(src)) {
                 return "//fuss10.elemecdn.com/" + src.substr(0, 1) + "/" + src.substr(1, 2) + "/" + src.substr(3) + ".jpeg?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/";
