@@ -27,12 +27,14 @@ export default new Vuex.Store({
         shopScore: '',
         //--------------shop评论tag信息-------------
         shopTag: '',
+        //--------------shop页面购物车信息-------------
+        shopCar: { count: 0, totalMoney: 0 },
         //-----筛选信息-----
-        sortShopList:[],
+        sortShopList: [],
 
-        orderShopList:[],
-        sortShopId:'',
-        sortShopOffset:0,
+        orderShopList: [],
+        sortShopId: '',
+        sortShopOffset: 0,
         //--------------------热门搜索信息---------------------
         hotSearch: [],
         //--------------------搜索结果页面信息--------------------
@@ -40,7 +42,7 @@ export default new Vuex.Store({
     },
 
     mutations: {
-       
+
         GETLD: function (state, pointr) {
             state.point = pointr;
         },
@@ -64,13 +66,13 @@ export default new Vuex.Store({
         },
         DELIST2: function (state, data) {
             state.delist2 = data;
-             },
+        },
         GETSEARCH: function (state, hotSearch) {
             state.hotSearch = hotSearch.data;
             console.log(state.hotSearch)
         },
         GETPAGE: function (state, searchpage) {
-            
+
             console.log(searchpage.data);
 
             for (var key in searchpage.data) {
@@ -78,8 +80,8 @@ export default new Vuex.Store({
             }
 
         },
-            // console.log(state.searchpage)
-       
+        // console.log(state.searchpage)
+
         //--------获取index店面信息开始----------
         getIndexShopData(state, data) {
             // console.log(data);                   //actions中  ajax请求获取的数据
@@ -133,13 +135,24 @@ export default new Vuex.Store({
             // console.log(obj);                   //actions中  ajax请求获取的数据
             var index = obj.index;
             var num = obj.num;
-            state.shopGoods[index].foods[num].origin_count++;
 
+            state.shopGoods[index].foods[num].origin_count++;
+            //购物车
+            var price = obj.price;
+            state.shopCar.count++;
+            state.shopCar.totalMoney += price;
+            state.shopCar.totalMoney.toFixed(1);
         },
         minusShopFoodCount(state, obj) {
             var index = obj.index;
             var num = obj.num;
             state.shopGoods[index].foods[num].origin_count--;
+            //购物车
+            var price = obj.price;
+            state.shopCar.count--;
+            state.shopCar.totalMoney -= price;
+            state.shopCar.totalMoney.toFixed(1);
+
         }
         //--------改变shopfood数量结束-----------
     },
@@ -153,17 +166,17 @@ export default new Vuex.Store({
         //--------对index店面信息的图片做处理结束-----------
     },
     actions: {
-        storeSortId:function(context,id){
-            context.state.sortShopId=id;
-            context.state.sortShopOffset=0;
-            context.state.orderShopList=[];
+        storeSortId: function (context, id) {
+            context.state.sortShopId = id;
+            context.state.sortShopOffset = 0;
+            context.state.orderShopList = [];
             context.dispatch('updateSortList');
         },
-        updateSortList:function(context){
-            axios.get('http://localhost:3000/sortshop?id='+context.state.sortShopId+'&offset='+context.state.sortShopOffset)
+        updateSortList: function (context) {
+            axios.get('http://localhost:3000/sortshop?id=' + context.state.sortShopId + '&offset=' + context.state.sortShopOffset)
                 .then(function (response) {
-                   context.state.sortShopOffset+=20;
-                    context.state.orderShopList=context.state.orderShopList.concat(response.data);
+                    context.state.sortShopOffset += 20;
+                    context.state.orderShopList = context.state.orderShopList.concat(response.data);
                 })
                 .catch(function (err) {
                     console.log(123);
@@ -276,7 +289,7 @@ export default new Vuex.Store({
                     console.log(err);
                     console.log("没有拿到");
                 });
-        },            
+        },
         getTude(context) {
             //获取当前经纬度代码
             console.log('touch commit');
