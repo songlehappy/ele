@@ -2,7 +2,7 @@
     <div>
         <mt-swipe :show-indicators="true" :continuous="true" :auto="0">
             <mt-swipe-item v-for="(item,key) in foodList.list" :key='key'>
-                <a :href="im.link|productLink" v-for="(im,ke) in foodList.list[key]" :key="ke+key">
+                <a :href="im.link|productLink" v-for="(im,ke) in foodList.list[key]" :key="ke+key" @click="changeID(im.business_flag)">
                     <div class="container">
                         <img :src="im.image_hash|imgSrc">
                     </div>
@@ -28,6 +28,11 @@ export default {
             } else {
                 return "//fuss10.elemecdn.com/" + src.substr(0, 1) + "/" + src.substr(1, 2) + "/" + src.substr(3) + ".png?imageMogr/format/webp/thumbnail/!90x90r/gravity/Center/crop/90x90/";
             }
+        }
+    },
+    methods:{
+        changeID:function(id){
+            this.$store.commit("CHANGEKD",id);
         }
     },
     computed: {

@@ -1,6 +1,7 @@
 <template>
-    <div>
-        <header data-v-3d8ac645="" class="ElemeHeader-root_lOpLxr-_0">
+    <div >
+        <div style="position: sticky;top: 0px;z-index: 1000;">
+        <header data-v-3d8ac645="" class="ElemeHeader-root_lOpLxr-_0"> 
             <div class="ElemeHeader-wrapper_2rUT4SE_0 ElemeHeader-gradientBg_3_Tu-JD_0">
                 <div class="ElemeHeader-left_7jLVUf9_0" @click="back">
                     <svg>
@@ -40,7 +41,7 @@
                         </li>
                     </ul>
                     <ul>
-                        <li v-for="(item,key) in sortShopList"  :key="'key'+key" :class="key==slectS?'active':''" style="line-height:50px" @click="changeSC(key,item.id)">
+                        <li v-for="(item,key) in sortShopList" :key="'key'+key" :class="key==slectS?'active':''" style="line-height:50px" @click="changeSC(key,item.id)">
                             <img :src="item.image_url|imgSrc">
                             <span>{{item.name}}</span>
                             <span class="count">{{item.count}}</span>
@@ -50,7 +51,7 @@
             </section>
             <section class="filter-extend filter-sort" :class="open2?'open':''">
                 <ul data-v-fd238482="">
-                    <li data-v-fd238482="" :class="active[0]" @click="changeLi(0)">
+                    <li data-v-fd238482="" :class="active[0]" @click="changeLi(0,'')">
                         <svg data-v-fd238482="">
                             <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#default"></use>
                         </svg>
@@ -59,7 +60,7 @@
                             <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
                         </svg>
                     </li>
-                    <li data-v-fd238482="" :class="active[1]" @click="changeLi(1)">
+                    <li data-v-fd238482="" :class="active[1]" @click="changeLi(1,5)">
                         <svg data-v-fd238482="">
                             <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#distance"></use>
                         </svg>
@@ -68,7 +69,7 @@
                             <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
                         </svg>
                     </li>
-                    <li data-v-fd238482="" :class="active[2]" @click="changeLi(2)">
+                    <li data-v-fd238482="" :class="active[2]" @click="changeLi(2,6)">
                         <svg data-v-fd238482="">
                             <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#hot"></use>
                         </svg>
@@ -77,7 +78,7 @@
                             <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
                         </svg>
                     </li>
-                    <li data-v-fd238482="" :class="active[3]" @click="changeLi(3)">
+                    <li data-v-fd238482="" :class="active[3]" @click="changeLi(3,1)">
                         <svg data-v-fd238482="">
                             <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#price"></use>
                         </svg>
@@ -86,7 +87,7 @@
                             <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
                         </svg>
                     </li>
-                    <li data-v-fd238482="" :class="active[4]" @click="changeLi(4)">
+                    <li data-v-fd238482="" :class="active[4]" @click="changeLi(4,2)">
                         <svg data-v-fd238482="">
                             <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#speed"></use>
                         </svg>
@@ -95,7 +96,7 @@
                             <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
                         </svg>
                     </li>
-                    <li data-v-fd238482="" :class="active[5]" @click="changeLi(5)">
+                    <li data-v-fd238482="" :class="active[5]" @click="changeLi(5,3)">
                         <svg data-v-fd238482="">
                             <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating"></use>
                         </svg>
@@ -110,7 +111,7 @@
                 <div class="filter-scroller" data-v-d7cbbe24>
                     <dl>
                         <dt data-v-d7cbbe24="">配送方式</dt>
-                        <dd data-v-d7cbbe24="" :class="ddactive[0]" @click="changedd(0)">
+                        <dd data-v-d7cbbe24="" :class="ddactive[0]" @click="changedd(0,'delivery_mode[]=1')">
                             <svg data-v-d7cbbe24="" class="fengniao">
                                 <use data-v-d7cbbe24="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#fengniao"></use>
                             </svg>
@@ -122,7 +123,7 @@
                     </dl>
                     <dl>
                         <dt data-v-d7cbbe24="">商家属性 (可多选)</dt>
-                        <dd data-v-d7cbbe24="" class="" v-for="(item,index) in deliver2" :key="'deliver'+index" :class="ddactive[index+1]" @click="changedd(index+1)">
+                        <dd data-v-d7cbbe24="" class="" v-for="(item,index) in deliver2" :key="'deliver'+index" :class="ddactive[index+1]" @click="changedd(index+1,('support_ids[]='+item.id))">
                             <svg data-v-d7cbbe24="" class="selected-icon">
                                 <use data-v-d7cbbe24="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
                             </svg>
@@ -134,8 +135,8 @@
                     </dl>
                 </div>
                 <div data-v-d7cbbe24="" class="filter-btn">
-                    <a data-v-d7cbbe24="" href="javascript:">清空</a>
-                    <a data-v-d7cbbe24="" href="javascript:">
+                    <a data-v-d7cbbe24="" href="javascript:" @click="clearAll">清空</a>
+                    <a data-v-d7cbbe24="" href="javascript:" @click="queryAll">
                         确定
                         <!---->
                     </a>
@@ -143,6 +144,7 @@
             </section>
             <section data-v-98a11d7e="" class="filter-modal" :class="openall?'open':''"></section>
         </aside>
+        </div>
         <SortList></SortList>
     </div>
 </template>
@@ -157,10 +159,12 @@ export default {
     },
     filters: {
         imgSrc: function (src) {
-            if (/jpeg/.test(src)) {
-                return "//fuss10.elemecdn.com/" + src.substr(0, 1) + "/" + src.substr(1, 2) + "/" + src.substr(3) + ".jpeg?imageMogr/format/webp/thumbnail/!80x80r/gravity/Center/crop/80x80/";
-            } else {
-                return "//fuss10.elemecdn.com/" + src.substr(0, 1) + "/" + src.substr(1, 2) + "/" + src.substr(3) + ".png?imageMogr/format/webp/thumbnail/!80x80r/gravity/Center/crop/80x80/";
+            if (src.substr) {
+                if (/jpeg/.test(src)) {
+                    return "//fuss10.elemecdn.com/" + src.substr(0, 1) + "/" + src.substr(1, 2) + "/" + src.substr(3) + ".jpeg?imageMogr/format/webp/thumbnail/!80x80r/gravity/Center/crop/80x80/";
+                } else {
+                    return "//fuss10.elemecdn.com/" + src.substr(0, 1) + "/" + src.substr(1, 2) + "/" + src.substr(3) + ".png?imageMogr/format/webp/thumbnail/!80x80r/gravity/Center/crop/80x80/";
+                }
             }
         }
     },
@@ -180,32 +184,62 @@ export default {
             open3: false,
             openall: false,
             active: ["active", "", "", "", "", ""],
-            ddactive: ['','','','','','','',''],
-            kind:"分类",
-            selctK:"",
-            slectS:"",
+            ddactive: ['', '', '', '', '', '', '', ''],
+            kind: "分类",
+            selctK: "",
+            slectS: "",
+            surportid:{}
         }
     },
     methods: {
-        changedd(index) {
+        queryAll(){
+            var queryStr=[];
+            //console.log(this.surportid);
+           for(var key in this.surportid){
+               
+                queryStr.push(this.surportid[key]);  
+           }
+            // console.log(queryStr);
+           var str=queryStr.join('&');
+           if(str!=''){
+              this.$store.dispatch("storeSortKind",str);
+              console.log(str); 
+           }
+            this.open3 = this.openall = !this.open3; 
+        },
+        clearAll(){
+            for(let i=0;i<this.ddactive.length;i++){
+                 Vue.set(this.ddactive, i, '');
+            };
+            for (var key in this.surportid){
+                 delete this.surportid[key];  
+            };
+             this.open3 = this.openall = !this.open3;
+        },
+        changedd(index,id) {
+            
             if (this.ddactive[index] == "") {
                 Vue.set(this.ddactive, index, 'selected');
+                this.surportid[index]=id;
+                
             } else {
                 Vue.set(this.ddactive, index, '');
+                delete this.surportid[index];
             }
 
         },
-        changeSC(index,id){
-            this.slectS=index;
-            this.open1=this.open2=this.open3=this.openall=false;
-            this.$store.dispatch("storeSortId",id);
+        changeSC(index, id) {
+            this.slectS = index;
+            this.open1 = this.open2 = this.open3 = this.openall = false;
+            this.$store.dispatch("storeSortId", id);
         },
-        changeLi(item) {
+        changeLi(item,id) {
             //console.log(item);
             for (let i = 0; i < this.active.length; i++) {
                 i == item ? Vue.set(this.active, i, 'active') : Vue.set(this.active, i, '');
             }
             this.open1 = this.open2 = this.open3 = this.openall = false;
+            this.$store.dispatch("storeSortId",id);
         },
         openKey() {
             this.open1 = this.open3 = false;
@@ -227,9 +261,9 @@ export default {
             window.history.back();
         },
         changeList(idex) {
-            this.kind=this.shopSort[idex].name;
-            this.selctK=idex;
-            this.slectS="";
+            this.kind = this.shopSort[idex].name;
+            this.selctK = idex;
+            this.slectS = "";
             if (this.shopSort[idex].sub_categories) {
                 this.sortShopList = this.shopSort[idex].sub_categories;
                 //console.log(this.sortShopList);
@@ -253,7 +287,7 @@ export default {
             return this.$store.state.delist1;
         },
         deliver2: function () {
-            //console.log(this.$store.state.delist2);
+            console.log(this.$store.state.delist2);
             return this.$store.state.delist2;
         }
     },
@@ -262,12 +296,15 @@ export default {
 }
 </script>
 <style scoped>
-.filter-category ul:nth-of-type(2) li.active, .filter-category ul:nth-of-type(2) li.active .count {
+.filter-category ul:nth-of-type(2) li.active,
+.filter-category ul:nth-of-type(2) li.active .count {
     color: #3190e8;
 }
+
 .filter-category li.active {
     background-color: #fff;
 }
+
 .filter-scroller i {
     display: inline-block;
     vertical-align: middle;
@@ -282,9 +319,11 @@ export default {
     font-size: .32rem;
     box-sizing: border-box;
 }
+
 .filter-scroller dd.selected i {
     display: none;
 }
+
 .filter-scroller dd.selected .fengniao,
 .filter-scroller dd.selected i {
     display: none;
@@ -453,6 +492,7 @@ ul[data-v-fd238482] {
     margin-right: .266667rem;
     vertical-align: middle;
 }
+
 .ElemeHeader-root_lOpLxr-_0 {
     height: 1.173333rem;
 }

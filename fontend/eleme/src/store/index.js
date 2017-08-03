@@ -36,11 +36,16 @@ export default new Vuex.Store({
         //--------------------热门搜索信息---------------------
         hotSearch: [],
         //--------------------搜索结果页面信息--------------------
-        searchpage: []
+        searchpage: [],
+        sorthMthod:1,
+        queryStr:'',
+        tagshopid:''
     },
 
     mutations: {
-       
+        CHANGEKD:function(state,id){
+            state.sortShopId=id;
+        },
         GETLD: function (state, pointr) {
             state.point = pointr;
         },
@@ -77,6 +82,9 @@ export default new Vuex.Store({
                 state.searchpage = searchpage.data[key].restaurant_with_foods;
             }
 
+        },
+        CACS:function(state,key){
+            state.orderShopList[key].isshow=!state.orderShopList[key].isshow
         },
             // console.log(state.searchpage)
        
@@ -157,13 +165,43 @@ export default new Vuex.Store({
             context.state.sortShopId=id;
             context.state.sortShopOffset=0;
             context.state.orderShopList=[];
+            context.state.sorthMthod=1;
             context.dispatch('updateSortList');
         },
+       storeSortKind:function(context,queryStr){
+            if(context.state.sortShopId==''){
+                context.state.queryStr=queryStr;
+                context.state.sorthMthod=2;
+            }else{
+                context.state.sorthMthod=3;
+                context.state.queryStr= 'id='+ context.state.sortShopId+"&"+queryStr;  
+            }
+             context.state.sortShopOffset=0;
+            context.state.orderShopList=[];
+            context.dispatch('updateSortList');
+                 
+       },
         updateSortList:function(context){
-            axios.get('http://localhost:3000/sortshop?id='+context.state.sortShopId+'&offset='+context.state.sortShopOffset)
+            var ajaxUrl='';
+            switch(context.state.sorthMthod){
+                case 1:
+                    ajaxUrl='http://localhost:3000/sortshop?id='+context.state.sortShopId+'&offset='+context.state.sortShopOffset;
+                    break;
+                case 2:
+
+                    ajaxUrl='http://localhost:3000/kindshop?'+context.state.queryStr+'&offset='+context.state.sortShopOffset;
+                    break;
+                case 3:
+                    ajaxUrl='http://localhost:3000/kindshop?'+context.state.queryStr+'&offset='+context.state.sortShopOffset;
+            }
+            axios.get(ajaxUrl)
                 .then(function (response) {
                    context.state.sortShopOffset+=20;
+                   for(let i=0;i<response.data.length;i++){
+                        response.data[i].isshow=false;
+                    }
                     context.state.orderShopList=context.state.orderShopList.concat(response.data);
+                    
                 })
                 .catch(function (err) {
                     console.log(123);
