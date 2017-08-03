@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-            <li v-for="(item,key) in list" :key="'list'+key" class="index-container_2XMzI">
+            <li v-for="(item,key) in list" :key="'list'+key" class="index-container_2XMzI" @click="goToDetail(item.id)">
                 <div class="logo-container_1XLJl_0">
                     <div class="logo-main_1kulr_0">
                         <img :alt="item.name" class="logo-logo_2XR1m_0" :src="item.image_path|imgSrc">
@@ -138,6 +138,9 @@ export default {
         } 
     },
     methods: {
+        goToDetail(id){
+            window.location.href="http://localhost:8080/#/shop/"+id+"/goods";
+        },
         changeToShow(key){
         //    this.$store.state.orderShopList[key].isshow=!this.$store.state.orderShopList[key].isshow;
             // console.log(this.isshow);

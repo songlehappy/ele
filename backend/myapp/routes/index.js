@@ -251,11 +251,11 @@ router.get('/search', function (req, res, next) {
     })
 });
 router.get('/searchpage', function (req, res, next) {
-    var name = encodeURIComponent(req.query.name);
-    console.log(name);
-    var dataStr = "";
-    var r;
-    var url = "https://mainsite-restapi.ele.me/shopping/v1/restaurants/search?offset=0&limit=20&keyword=" + name + "&latitude=22.583177&longitude=113.9569768&search_item_type=2&extra[]=activities";
+  var name = encodeURIComponent(req.query.name);
+  var count = encodeURIComponent(req.query.count);
+  console.log(name);
+  var dataStr="";
+  var url = "https://mainsite-restapi.ele.me/shopping/v1/restaurants/search?offset="+count+"&limit=20&keyword=" + name + "&latitude=22.583177&longitude=113.9569768&search_item_type=2&extra[]=activities";
 
     https.get(url, (response) => {
         response.on('data', (d) => {
