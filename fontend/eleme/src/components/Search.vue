@@ -10,7 +10,7 @@
     <section>
       <header class="history-KdKLE_1">
         <span>历史搜索</span>
-        <i v-if="histore" class="el-icon-delete" @click="deleteItem"></i>
+        <i v-show="histore.length!==0" class="el-icon-delete" @click="deleteItem"></i>
       </header>
   
       <section class="history-3kzV5_1">
@@ -56,8 +56,8 @@ export default {
   },
   methods: {
     changekey: function (name) {
-      console.log(name);
       this.skip(name);
+      this.$store.commit('CHANGE')
     },
     deleteItem: function () {
       // 点击垃圾桶,清空this.histore并且清除locallhost
@@ -67,20 +67,27 @@ export default {
     search: function (name) {
       // keyup事件保存locallhost
       var result = this.histore.indexOf(this.searchInput)
-      if (this.searchInput.trim() && result == -1) {
-        this.histore.unshift(this.searchInput);
-        // 保存到locallhost,注意转换为json字符串
-        window.localStorage.setItem('historyArr', JSON.stringify(this.histore));
+      if (this.searchInput.trim()) {
+        // 不为空,则前往详情页面
         this.skip(name);
+        //前往详情页之前触发销CHANGE突变
+        this.$store.commit('CHANGE')
+        if (result == -1) {
+          this.histore.unshift(this.searchInput);
+          // 保存到locallhost,注意转换为json字符串
+          window.localStorage.setItem('historyArr', JSON.stringify(this.histore));
+        }
       }
+      console.log(this.histore)
     },
     skip: function (name) {
       // 跳转到搜索结果页面
-      window.location.href="http://localhost:8080/#/SearchPage?name=" + name;
-    },
-    ...mapMutations({
-      change: 'CHANGE'
-    })
+      this.$store.commit('CHANGE');
+      window.location.href = "http://localhost:8080/#/SearchPage?name=" + name;
+    }
+    // ...mapMutations({
+    //   changekey: 'CHANGE'
+    // })
   }
 }
 </script>

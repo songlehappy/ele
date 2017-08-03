@@ -152,7 +152,7 @@ import { InfiniteScroll } from 'mint-ui';
 import Vue from 'vue';
 Vue.use(InfiniteScroll);
 export default {
-    filters:{
+    filters: {
         imgSrc: function (src) {
             if (/jpeg/.test(src)) {
                 return "//fuss10.elemecdn.com/" + src.substr(0, 1) + "/" + src.substr(1, 2) + "/" + src.substr(3) + ".jpeg?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/";
