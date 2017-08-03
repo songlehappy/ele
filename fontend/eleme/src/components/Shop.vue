@@ -62,7 +62,6 @@ export default {
     mounted: function () {
         let loadingInstance = Loading.service();
         // 页面加载等待时间
-
         setTimeout(function () {
             loadingInstance.close()
         }, 1000)

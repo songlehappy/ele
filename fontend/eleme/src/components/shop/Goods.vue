@@ -24,11 +24,11 @@
                             <div>
                                 <div>￥{{str.specfoods[0].price}}</div>
                                 <div class="add-goods">
-                                    <svg @click="minusFood(index,num)" v-show="str.origin_count">
+                                    <svg @click="minusFood(index,num,str.specfoods[0].price)" v-show="str.origin_count">
                                         <path fill-rule="evenodd" d="M32 20c1.1 0 2 .9 2 2s-.9 2-2 2H12c-1.1 0-2-.9-2-2s.9-2 2-2h20z" clip-rule="evenodd"></path>
                                     </svg>
                                     <span v-show="str.origin_count">{{str.origin_count}}</span>
-                                    <svg @click="plusFood(index,num)" viewBox="0 0 44 44" id="cart-minus" width="100%" height="100%">
+                                    <svg @click="plusFood(index,num,str.specfoods[0].price)" viewBox="0 0 44 44" id="cart-minus" width="100%" height="100%">
                                         <path fill-rule="evenodd" d="M22 0C9.8 0 0 9.8 0 22s9.8 22 22 22 22-9.8 22-22S34.2 0 22 0zm10 24h-8v8c0 1.1-.9 2-2 2s-2-.9-2-2v-8h-8c-1.1 0-2-.9-2-2s.9-2 2-2h8v-8c0-1.1.9-2 2-2s2 .9 2 2v8h8c1.1 0 2 .9 2 2s-.9 2-2 2z" clip-rule="evenodd"></path>
                                     </svg>
                                 </div>
@@ -39,14 +39,14 @@
             </div>
         </div>
         <div class="shop-car">
-            <div class="car">
-                <el-badge value="10" class="item"></el-badge>
+            <div :class="{car:true,addcar:shopCar.count}">
+                <el-badge :value="shopCar.count" class="item"></el-badge>
             </div>
             <div class="car-left">
-                <p>￥0</p>
+                <p>￥{{shopCar.totalMoney}}</p>
                 <span>配送费￥{{shopHead.float_delivery_fee}}</span>
             </div>
-            <a class="car-right">￥{{shopHead.float_minimum_order_amount}}起送</a>
+            <a :class="{'car-right':true,'go-account':changeGreen}" :href="changeGreen?'http://localhost:8080/#/order':'javascript:;'">￥{{shopHead.float_minimum_order_amount}}起送</a>
         </div>
     </div>
 </template>
@@ -54,24 +54,87 @@
 <script>
 // 引入辅助函数mapstate
 import { mapState } from 'vuex'
+import $ from 'jquery'
 export default {
     data() {
         return {
-
+            changeGreen:false,
         }
     },
+    mounted() {
+        this.flag = true;
+        var that = this;
+        var goodsLeft = $('.goods-left');
+        var goodsRight = $('.goods-right');
+        var subRight = $('.goods-content .sub-right');
+        //默认第一个加左边线
+        console.log(goodsLeft.find('a').eq(0));
+        goodsLeft.find('a').eq(0).addClass('leftLine');
+        goodsLeft.on('click', 'a', function () {
+            that.flag = false;
+            var index = $(this).index();
+            $(this).addClass('leftLine').siblings().removeClass('leftLine');
+            goodsRight.animate({
+                scrollTop: that.getHeight(index)
+            }, function () {
+                that.flag = true;
+            })
+        })
+
+        //gundong
+        goodsRight.scroll(function () {
+            subRight.each(function (index) {
+                // console.log($(this).position().top);
+                if ($(this).position().top <= 0 && that.flag == true) {
+                    //加左边的伪类
+                    // console.log($(this).position().top);
+                    goodsLeft.find('a').removeClass('leftLine').eq(index).addClass('leftLine');
+
+                }
+            })
+        })
+
+    },
+    watch: {
+        'shopCar.totalMoney': function (newVal, oldVal) {
+            if (newVal === 0) {
+                $('.car-right').html('￥' + this.shopHead.float_minimum_order_amount + '起送')
+                this.changeGreen=false;
+            } else if (newVal >= this.shopHead.float_minimum_order_amount) {
+                $('.car-right').html('去结算');
+                this.changeGreen=true;
+            } else {
+                $('.car-right').html('还差￥' + (this.shopHead.float_minimum_order_amount - newVal) + '起送')
+                this.changeGreen=false;
+            }
+        }
+    },
+
     methods: {
-        plusFood(index,num) {
+        plusFood(index, num, price) {
             // console.log(index,num)
-            this.$store.commit('plusShopFoodCount', {index:index,num:num});
+            this.$store.commit('plusShopFoodCount', { index: index, num: num, price: price });
+            // this.$emit('account');
+            // console.log(111);
         },
-        minusFood(index,num){
-            this.$store.commit('minusShopFoodCount', {index:index,num:num});
+        minusFood(index, num, price) {
+            this.$store.commit('minusShopFoodCount', { index: index, num: num, price: price });
+            // this.$emit('account');
+        },
+        //获得第sub-right的高度
+        getHeight(num) {
+
+            var totalHeight = 0;
+            var subRight = $('.goods-content .sub-right');
+            for (var i = 0; i < num; i++) {
+                totalHeight += subRight.eq(i).height();
+            }
+            return totalHeight;
         }
     },
     computed: {
         //得到状态信息
-        ...mapState(['shopGoods', 'shopHead']),
+        ...mapState(['shopGoods', 'shopHead', 'shopCar']),
     }
 }
 </script>
@@ -79,6 +142,7 @@ export default {
 
 <style scoped lang='scss'>
 .goods-content {
+    position: relative;
     height: 11.78666rem;
     overflow: auto;
     display: flex;
@@ -101,6 +165,18 @@ export default {
                 border-bottom: 1px solid #ededed;
                 font-size: .346667rem;
                 color: #666;
+            }
+        }
+        .leftLine {
+            background: #fff;
+            &:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 0.1rem;
+                left: 0;
+                background: #3190e8;
             }
         }
     }
@@ -179,11 +255,8 @@ export default {
                         }
                         .add-goods {
                             width: 3rem;
-                            span {
-                                position: relative;
-                                top: -5px;
-                                padding: 0 0.2rem;
-                            }
+                            text-align: center;
+
                             svg {
                                 width: 40px;
                                 height: 40px;
@@ -193,6 +266,7 @@ export default {
                                 float: right;
                             }
                             svg:first-child {
+                                float: left;
                                 border: 1px solid #3190e8;
                                 border-radius: 50%;
                             }
@@ -228,6 +302,9 @@ export default {
         background-size: 70% 70%;
         background-color: #3d3d3f;
     }
+    .addcar {
+        background-color: #3190e8;
+    }
     .car-left {
         flex: 1;
         display: flex;
@@ -246,9 +323,14 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        color:#fff;
         font-size: .4rem;
         font-weight: 700;
         background: #535356;
+        text-decoration: none;
+    }
+    .go-account {
+        background: #4cd964;
     }
 }
 
