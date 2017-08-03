@@ -45,13 +45,9 @@ export default new Vuex.Store({
     },
 
     mutations: {
-<<<<<<< HEAD
         CHANGEKD:function(state,id){
             state.sortShopId=id;
         },
-=======
-
->>>>>>> e0e323e9e1b415d465cdbc7420cb2e1acbeb5ebe
         GETLD: function (state, pointr) {
             state.point = pointr;
         },
@@ -89,16 +85,11 @@ export default new Vuex.Store({
             }
 
         },
-<<<<<<< HEAD
         CACS:function(state,key){
             state.orderShopList[key].isshow=!state.orderShopList[key].isshow
         },
             // console.log(state.searchpage)
        
-=======
-        // console.log(state.searchpage)
-
->>>>>>> e0e323e9e1b415d465cdbc7420cb2e1acbeb5ebe
         //--------获取index店面信息开始----------
         getIndexShopData(state, data) {
             // console.log(data);                   //actions中  ajax请求获取的数据
@@ -183,7 +174,6 @@ export default new Vuex.Store({
         //--------对index店面信息的图片做处理结束-----------
     },
     actions: {
-<<<<<<< HEAD
         storeSortId:function(context,id){
             context.state.sortShopId=id;
             context.state.sortShopOffset=0;
@@ -225,19 +215,6 @@ export default new Vuex.Store({
                     }
                     context.state.orderShopList=context.state.orderShopList.concat(response.data);
                     
-=======
-        storeSortId: function (context, id) {
-            context.state.sortShopId = id;
-            context.state.sortShopOffset = 0;
-            context.state.orderShopList = [];
-            context.dispatch('updateSortList');
-        },
-        updateSortList: function (context) {
-            axios.get('http://localhost:3000/sortshop?id=' + context.state.sortShopId + '&offset=' + context.state.sortShopOffset)
-                .then(function (response) {
-                    context.state.sortShopOffset += 20;
-                    context.state.orderShopList = context.state.orderShopList.concat(response.data);
->>>>>>> e0e323e9e1b415d465cdbc7420cb2e1acbeb5ebe
                 })
                 .catch(function (err) {
                     console.log(123);
