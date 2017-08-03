@@ -4,7 +4,7 @@
       <a href="JavaScript:history.go(-1)">
         <i class="el-icon-arrow-left"></i>
       </a>
-      <input type="search" autofocus="autofocus" v-model="key" class="headerInput" />
+      <input type="search" autofocus="autofocus" v-model="key" class="headerInput" @keyup.13="search(key)" />
     </form>
     <ul class="tab">
       <li>
@@ -20,7 +20,7 @@
         <i class="el-icon-caret-bottom"></i>
       </li>
     </ul>
-    <ul class="main">
+    <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="main">
       <li class="food" v-for="(item,key) in searchpage" :key="key" @click="goDetial(item.restaurant.id)">
         <div class="logo">
           <img class="pic" :src="'https://fuss10.elemecdn.com/'+item.restaurant.image_path+(/png$/.test(item.restaurant.image_path)?'.png':'.jpeg'+'?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/')" />
@@ -53,7 +53,7 @@
           </p>
         </div>
       </li>
-      <p class="end">没有更多了哦~</p>
+      <p class="end">加载中~</p>
     </ul>
   </div>
 </template>
@@ -61,29 +61,29 @@
 <script>
 import axios from 'axios'
 import { mapState, mapMutations } from 'vuex'
-
 import { Loading } from 'element-ui';
 export default {
   data() {
     return {
       key: '',
-      fullscreenLoading: false
+      fullscreenLoading: false,
+      num: 0,
+      loading: false,
     }
   },
   mounted: function () {
 
     let loadingInstance = Loading.service();
-    // console.log(this.$store.state.searchpage)
-    // if (this.$store.state.searchpage) {
-    //   console.log(1111)
-    // }
     setTimeout(function () {
       loadingInstance.close()
     }, 2000)
     // 取参数
     var name = location.hash.split('?')[1].split('=')[1];
-    this.key = decodeURI(name)
-    this.$store.dispatch('getSearchpage', name);
+    this.key = decodeURI(name);
+    this.$store.dispatch('getSearchpage', {
+      name: name,
+      count: 0
+    });
     // console.log(this.key)
   },
   computed: {
@@ -102,6 +102,29 @@ export default {
     //去详情页
     goDetial(id) {
       window.open('http://localhost:8080/#/shop/' + id, '_self');
+    },
+    //-------------上拉已经促发时调用----此为调用ajax请求
+    loadMore() {
+      var name = location.hash.split('?')[1].split('=')[1];
+      this.num += 20;
+      var count = this.num;
+      if (this.$store.state.searchpage.length % 20 == 0) {
+        this.$store.dispatch('getSearchpage', {
+          name: name,
+          count: count
+        });
+      }
+    },
+    search() {
+      var name = this.key;
+      var count = this.count;
+      if (name) {       
+        this.$store.commit('CHANGE');
+        this.$store.dispatch('getSearchpage', {
+          name: name,
+          count: 0
+        });
+      }
     }
   }
 }

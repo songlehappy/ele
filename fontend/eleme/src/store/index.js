@@ -72,21 +72,25 @@ export default new Vuex.Store({
              },
         GETSEARCH: function (state, hotSearch) {
             state.hotSearch = hotSearch.data;
-            console.log(state.hotSearch)
+
         },
         GETPAGE: function (state, searchpage) {
-            
-            console.log(searchpage.data);
 
             for (var key in searchpage.data) {
-                state.searchpage = searchpage.data[key].restaurant_with_foods;
+                state.searchpage = state.searchpage.concat(searchpage.data[key].restaurant_with_foods);
             }
 
         },
+<<<<<<< HEAD
         CACS:function(state,key){
             state.orderShopList[key].isshow=!state.orderShopList[key].isshow
         },
             // console.log(state.searchpage)
+=======
+        CHANGE:function(state){
+            state.searchpage=[];
+        },
+>>>>>>> 4e97e860a2f38a43bb70d66f5b79ab1216255e2c
        
         //--------获取index店面信息开始----------
         getIndexShopData(state, data) {
@@ -304,17 +308,21 @@ export default new Vuex.Store({
                     console.log("123");
                 });
         },
-        getSearchpage(context, name) {
-            axios.get('http://localhost:3000/searchpage?name=' + name)
+
+        getSearchpage(context, data) {
+            // console.log(data.name);
+            var name=data.name;
+            var count=data.count;
+            axios.get('http://localhost:3000/searchpage?name=' + name+"&&count="+count)
                 .then(function (response) {
                     console.log(response);
                     context.commit("GETPAGE", response);
                 })
                 .catch(function (err) {
                     console.log(err);
-                    console.log("没有拿到");
                 });
-        },            
+        },  
+                      
         getTude(context) {
             //获取当前经纬度代码
             console.log('touch commit');
