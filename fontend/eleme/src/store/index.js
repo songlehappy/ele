@@ -29,6 +29,8 @@ export default new Vuex.Store({
         shopTag: '',
         //--------------shop页面购物车信息-------------
         shopCar: { count: 0, totalMoney: 0 },
+        //--------------shop中弹出的购物车-------------
+        shopAlertCar: [],
         //-----筛选信息-----
         sortShopList: [],
 
@@ -93,12 +95,12 @@ export default new Vuex.Store({
             }
 
         },
-        CACS:function(state,key){
-            state.orderShopList[key].isshow=!state.orderShopList[key].isshow
+        CACS: function (state, key) {
+            state.orderShopList[key].isshow = !state.orderShopList[key].isshow
         },
-            // console.log(state.searchpage)
-        CHANGE:function(state){
-            state.searchpage=[];
+        // console.log(state.searchpage)
+        CHANGE: function (state) {
+            state.searchpage = [];
         },
        CHANGETIP:function(state,tips){
             state.tips=tips;
@@ -161,8 +163,22 @@ export default new Vuex.Store({
             //购物车
             var price = obj.price;
             state.shopCar.count++;
-            state.shopCar.totalMoney += price;
-            state.shopCar.totalMoney.toFixed(1);
+            var money = state.shopCar.totalMoney;
+            money += price;
+            state.shopCar.totalMoney = Math.round(money * 10) / 10;
+            //弹出的购物车
+            var carObj = { name: '', price: '', count: 0 };
+            carObj.name = obj.name;
+            carObj.price = price;
+            carObj.count = 1;
+            for (var i = 0, len = state.shopAlertCar.length; i < len; i++) {
+                if(state.shopAlertCar[i].name === carObj.name){
+                    state.shopAlertCar[i].count++;
+                    return;
+                }
+            }
+            state.shopAlertCar.push(carObj);
+
         },
         minusShopFoodCount(state, obj) {
             var index = obj.index;
@@ -171,9 +187,18 @@ export default new Vuex.Store({
             //购物车
             var price = obj.price;
             state.shopCar.count--;
-            state.shopCar.totalMoney -= price;
-            state.shopCar.totalMoney.toFixed(1);
-
+            var money = state.shopCar.totalMoney;
+            money -= price;
+            state.shopCar.totalMoney = Math.round(money * 10) / 10;
+            //弹出的购物车
+            
+            for (var i = 0, len = state.shopAlertCar.length; i < len; i++) {
+                if(state.shopAlertCar[i].name === obj.name){
+                    state.shopAlertCar[i].count--;
+                    return;
+                }
+            }
+            
         }
         //--------改变shopfood数量结束-----------
     },
@@ -227,11 +252,11 @@ export default new Vuex.Store({
             var ajaxUrl='';
             switch(context.state.sorthMthod){
                 case 1:
-                    ajaxUrl='http://localhost:3000/sortshop?id='+context.state.sortShopId+'&offset='+context.state.sortShopOffset;
+                    ajaxUrl = 'http://localhost:3000/sortshop?id=' + context.state.sortShopId + '&offset=' + context.state.sortShopOffset;
                     break;
                 case 2:
 
-                    ajaxUrl='http://localhost:3000/kindshop?'+context.state.queryStr+'&offset='+context.state.sortShopOffset;
+                    ajaxUrl = 'http://localhost:3000/kindshop?' + context.state.queryStr + '&offset=' + context.state.sortShopOffset;
                     break;
                 case 3:
                     ajaxUrl='http://localhost:3000/kindshop?'+context.state.queryStr+'&offset='+context.state.sortShopOffset;
@@ -241,9 +266,9 @@ export default new Vuex.Store({
                 }
             axios.get(ajaxUrl)
                 .then(function (response) {
-                   context.state.sortShopOffset+=20;
-                   for(let i=0;i<response.data.length;i++){
-                        response.data[i].isshow=false;
+                    context.state.sortShopOffset += 20;
+                    for (let i = 0; i < response.data.length; i++) {
+                        response.data[i].isshow = false;
                     }
                     context.state.orderShopList=context.state.orderShopList.concat(response.data);
                     context.commit('CLMT',false);
@@ -352,9 +377,9 @@ export default new Vuex.Store({
 
         getSearchpage(context, data) {
             // console.log(data.name);
-            var name=data.name;
-            var count=data.count;
-            axios.get('http://localhost:3000/searchpage?name=' + name+"&&count="+count)
+            var name = data.name;
+            var count = data.count;
+            axios.get('http://localhost:3000/searchpage?name=' + name + "&&count=" + count)
                 .then(function (response) {
                     console.log(response);
                     context.commit("GETPAGE", response);

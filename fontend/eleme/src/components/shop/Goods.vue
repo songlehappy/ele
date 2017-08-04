@@ -24,11 +24,11 @@
                             <div>
                                 <div>￥{{str.specfoods[0].price}}</div>
                                 <div class="add-goods">
-                                    <svg @click="minusFood(index,num,str.specfoods[0].price)" v-show="str.origin_count">
+                                    <svg @click="minusFood(index,num,str.specfoods[0].price,str.name)" v-show="str.origin_count">
                                         <path fill-rule="evenodd" d="M32 20c1.1 0 2 .9 2 2s-.9 2-2 2H12c-1.1 0-2-.9-2-2s.9-2 2-2h20z" clip-rule="evenodd"></path>
                                     </svg>
                                     <span v-show="str.origin_count">{{str.origin_count}}</span>
-                                    <svg @click="plusFood(index,num,str.specfoods[0].price)" viewBox="0 0 44 44" id="cart-minus" width="100%" height="100%">
+                                    <svg @click="plusFood(index,num,str.specfoods[0].price,str.name)" viewBox="0 0 44 44" id="cart-minus" width="100%" height="100%">
                                         <path fill-rule="evenodd" d="M22 0C9.8 0 0 9.8 0 22s9.8 22 22 22 22-9.8 22-22S34.2 0 22 0zm10 24h-8v8c0 1.1-.9 2-2 2s-2-.9-2-2v-8h-8c-1.1 0-2-.9-2-2s.9-2 2-2h8v-8c0-1.1.9-2 2-2s2 .9 2 2v8h8c1.1 0 2 .9 2 2s-.9 2-2 2z" clip-rule="evenodd"></path>
                                     </svg>
                                 </div>
@@ -42,11 +42,26 @@
             <div :class="{car:true,addcar:shopCar.count}">
                 <el-badge :value="shopCar.count" class="item"></el-badge>
             </div>
-            <div class="car-left">
+            <div class="car-left" @click="alertShopCar(shopCar.totalMoney)">
                 <p>￥{{shopCar.totalMoney}}</p>
                 <span>配送费￥{{shopHead.float_delivery_fee}}</span>
             </div>
             <a :class="{'car-right':true,'go-account':changeGreen}" :href="changeGreen?'http://localhost:8080/#/order':'javascript:;'">￥{{shopHead.float_minimum_order_amount}}起送</a>
+        </div>
+        <div :class="{'big-black':carFlag,}" v-show="carFlag" @click="offCar()">
+            <div class="alert-car" @click.stop="stopCar()" >
+                <div class="car-top">
+                    <span>购物车</span>
+                    <div>
+                        <span>清空</span>
+                    </div>
+                </div>
+                <div class="car-bottom" v-if="item.count" :key="index" v-for="(item,index) in shopAlertCar">
+                    <span>{{item.name}}</span>
+                    <b>￥{{item.price*item.count}}</b>
+                    <div>{{item.count}}</div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -58,7 +73,8 @@ import $ from 'jquery'
 export default {
     data() {
         return {
-            changeGreen:false,
+            changeGreen: false,
+            carFlag: false,
         }
     },
     mounted() {
@@ -68,7 +84,7 @@ export default {
         var goodsRight = $('.goods-right');
         var subRight = $('.goods-content .sub-right');
         //默认第一个加左边线
-        console.log(goodsLeft.find('a').eq(0));
+        // console.log(goodsLeft.find('a').eq(0));
         goodsLeft.find('a').eq(0).addClass('leftLine');
         goodsLeft.on('click', 'a', function () {
             that.flag = false;
@@ -99,26 +115,26 @@ export default {
         'shopCar.totalMoney': function (newVal, oldVal) {
             if (newVal === 0) {
                 $('.car-right').html('￥' + this.shopHead.float_minimum_order_amount + '起送')
-                this.changeGreen=false;
+                this.changeGreen = false;
             } else if (newVal >= this.shopHead.float_minimum_order_amount) {
                 $('.car-right').html('去结算');
-                this.changeGreen=true;
+                this.changeGreen = true;
             } else {
                 $('.car-right').html('还差￥' + (this.shopHead.float_minimum_order_amount - newVal) + '起送')
-                this.changeGreen=false;
+                this.changeGreen = false;
             }
         }
     },
 
     methods: {
-        plusFood(index, num, price) {
+        plusFood(index, num, price, name) {
             // console.log(index,num)
-            this.$store.commit('plusShopFoodCount', { index: index, num: num, price: price });
+            this.$store.commit('plusShopFoodCount', { index: index, num: num, price: price, name: name });
             // this.$emit('account');
             // console.log(111);
         },
-        minusFood(index, num, price) {
-            this.$store.commit('minusShopFoodCount', { index: index, num: num, price: price });
+        minusFood(index, num, price, name) {
+            this.$store.commit('minusShopFoodCount', { index: index, num: num, price: price, name: name });
             // this.$emit('account');
         },
         //获得第sub-right的高度
@@ -130,11 +146,22 @@ export default {
                 totalHeight += subRight.eq(i).height();
             }
             return totalHeight;
+        },
+        alertShopCar(num) {
+            if (num !== 0) {
+                this.carFlag = !this.carFlag;
+            }
+        },
+        offCar(){
+            this.carFlag = false;
+        },
+        stopCar(){
+
         }
     },
     computed: {
         //得到状态信息
-        ...mapState(['shopGoods', 'shopHead', 'shopCar']),
+        ...mapState(['shopGoods', 'shopHead', 'shopCar', 'shopAlertCar']),
     }
 }
 </script>
@@ -290,6 +317,7 @@ export default {
     height: 1.28rem;
     opacity: .95;
     color: #fff;
+    z-index: 10;
     .car {
         position: absolute;
         top: -20%;
@@ -323,7 +351,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        color:#fff;
+        color: #fff;
         font-size: .4rem;
         font-weight: 700;
         background: #535356;
@@ -338,5 +366,54 @@ export default {
     position: absolute;
     top: -40%;
     right: 0;
+}
+
+.big-black {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 1.3rem;
+    background: rgba(6, 6, 6, 0.5);
+    .alert-car {
+        padding: 0 .333333rem;
+        font-size: .426667rem;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-bottom: 1px solid #ddd;
+        background-color: #eceff1;
+        color: #666;
+        .car-top {
+            height: 1.066667rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            &>span {
+                padding-left: .133333rem;
+                border-left: .093333rem solid #3190e8;
+            }
+        }
+        .car-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: .2rem .333333rem .2rem 0;
+            min-height: 1.466667rem;
+            span {
+                display: inline-block;
+                font-style: normal;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                vertical-align: middle;
+                width: 4.666667rem;
+            }
+            b {
+                color: #f60;
+            }
+        }
+    }
 }
 </style>

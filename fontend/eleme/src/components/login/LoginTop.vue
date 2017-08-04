@@ -11,17 +11,26 @@
     </header>
 </template>
 <script>
-
+export default {
+    data(){
+        return{
+            
+        }
+    },
+}
 </script>
+
 <style scoped>
 .ElemeHeader-root_lOpLxr-_0 {
     height: 1.173333rem;
 }
+
 .ElemeHeader-wrapper_2rUT4SE_0.ElemeHeader-fixed_3OoT0dS_0 {
     position: fixed;
     top: 0;
     left: 0;
 }
+
 .ElemeHeader-wrapper_2rUT4SE_0 {
     position: relative;
     display: -webkit-box;
@@ -42,10 +51,12 @@
     font-size: .48rem;
     background: #2395ff;
 }
+
 .ElemeHeader-gradientBg_3_Tu-JD_0 {
-    background-image: -webkit-linear-gradient(left,#0af,#0085ff);
-    background-image: linear-gradient(90deg,#0af,#0085ff);
+    background-image: -webkit-linear-gradient(left, #0af, #0085ff);
+    background-image: linear-gradient(90deg, #0af, #0085ff);
 }
+
 .ElemeHeader-left_7jLVUf9_0 {
     display: -webkit-box;
     display: -webkit-flex;
@@ -62,11 +73,13 @@
     width: 1.173333rem;
     height: 1.173333rem;
 }
+
 .ElemeHeader-left_7jLVUf9_0 svg {
     display: block;
     width: .586667rem;
     height: .586667rem;
 }
+
 .ElemeHeader-center_2hbxfGq_0 {
     position: absolute;
     top: 0;
