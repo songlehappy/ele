@@ -20,7 +20,7 @@
         <i class="el-icon-caret-bottom"></i>
       </li>
     </ul>
-    <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="main">
+    <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="main" ref="top">
       <li class="food" v-for="(item,key) in searchpage" :key="key" @click="goDetial(item.restaurant.id)">
         <div class="logo">
           <img class="pic" :src="'https://fuss10.elemecdn.com/'+item.restaurant.image_path+(/png$/.test(item.restaurant.image_path)?'.png':'.jpeg'+'?imageMogr/format/webp/thumbnail/!120x120r/gravity/Center/crop/120x120/')" />
@@ -55,6 +55,9 @@
       </li>
       <p class="end">加载中~</p>
     </ul>
+    <div v-show="isShow" @click="gotop">
+      <goTop></goTop>
+    </div>
   </div>
 </template>
 
@@ -62,13 +65,19 @@
 import axios from 'axios'
 import { mapState, mapMutations } from 'vuex'
 import { Loading } from 'element-ui';
+import goTop from '@/components/goTop'
 export default {
+  components: {
+    goTop
+  },
   data() {
     return {
       key: '',
       fullscreenLoading: false,
       num: 0,
       loading: false,
+      isShow: false,
+      scroll: ''
     }
   },
   mounted: function () {
@@ -84,7 +93,7 @@ export default {
       name: name,
       count: 0
     });
-    // console.log(this.key)
+    this.$refs.top.addEventListener('scroll', this.menu);
   },
   computed: {
     ...mapState(['searchpage'])
@@ -95,6 +104,14 @@ export default {
     key: function (newVal, oldVal) {
       if (!newVal) {
         window.location.href = "http://localhost:8080/#/Search"
+      }
+    },
+    scroll:function(newVal, oldVal){
+      if(newVal>=700){
+          this.isShow=true;
+      }
+      if(newVal<700){
+          this.isShow=false;
       }
     }
   },
@@ -107,6 +124,9 @@ export default {
     loadMore() {
       var name = location.hash.split('?')[1].split('=')[1];
       this.num += 20;
+
+      // console.log(this.$refs.top.scrollTop)
+
       var count = this.num;
       if (this.$store.state.searchpage.length % 20 == 0) {
         this.$store.dispatch('getSearchpage', {
@@ -115,16 +135,22 @@ export default {
         });
       }
     },
+    gotop() {
+      this.$refs.top.scrollTop = 0;
+    },
     search() {
       var name = this.key;
       var count = this.count;
-      if (name) {       
+      if (name) {
         this.$store.commit('CHANGE');
         this.$store.dispatch('getSearchpage', {
           name: name,
           count: 0
         });
       }
+    },
+    menu() {
+      this.scroll = this.$refs.top.scrollTop;
     }
   }
 }

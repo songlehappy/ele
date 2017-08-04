@@ -1,15 +1,17 @@
 <template>
     <header>
         <div class="index-MAORp">
-            <div class="index-3vsmj">
-                <svg class="index-3guVd">
-                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#location"></use>
-                </svg>
-                <span class="index-1cnKa">{{getL}}</span>
-                <svg class="index-9eIfV">
-                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow"></use>
-                </svg>
-            </div>
+            <a href="#/Address" class="ad">
+                <div class="index-3vsmj">
+                    <svg class="index-3guVd">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#location"></use>
+                    </svg>
+                    <span class="index-1cnKa">{{getL}}</span>
+                    <svg class="index-9eIfV">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow"></use>
+                    </svg>
+                </div>
+            </a>
             <aside class="index-2LvmP">
                 <div>
                     <h2 class="index-17uRU">{{getWT}}</h2>
@@ -150,7 +152,7 @@ header {
     -webkit-overflow-scrolling: touch;
     box-sizing: border-box;
     height: 28px;
-    color:#fff;
+    color: #fff;
     font-size: 24px;
 }
 
@@ -193,6 +195,12 @@ header {
     color: #333;
     font-size: .346667rem;
     outline: none;
-    border:none;
+    border: none;
+}
+
+.ad {
+    text-decoration: none;
+    display: inline-block;
+    color: #fff;
 }
 </style>
