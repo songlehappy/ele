@@ -12,6 +12,7 @@ import LDetail from '@/components/LDetail.vue'
 import Discover from '@/components/Discover'
 import Search from '@/components/Search'
 import SearchPage from '@/components/search/Searchpage'
+import Address from '@/components/Address'
 Vue.use(Router)
 
 export default new Router({
@@ -45,7 +46,7 @@ export default new Router({
             name: 'Order',
             components: {
                 Body: Order,
-                Footer: LinkR 
+                Footer: LinkR
             }
         },
         {
@@ -59,14 +60,21 @@ export default new Router({
             path: '/Search',
             name: 'search',
             components: {
-                Body:Search
+                Body: Search
+            }
+        },
+        {
+            path: '/Address',
+            name: 'Address',
+            components: {
+                Body: Address
             }
         },
         {
             path: "/SearchPage",
             name: 'SearchPage',
             components: {
-                Body:SearchPage
+                Body: SearchPage
             }
         },
         {
@@ -78,7 +86,7 @@ export default new Router({
         {
             path: '/shop/:id',
             components: {
-                Body: Shop,  
+                Body: Shop,
             },
             //以下为详情页 子路由
             children: [

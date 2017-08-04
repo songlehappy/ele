@@ -308,7 +308,6 @@ export default new Vuex.Store({
             var count=data.count;
             axios.get('http://localhost:3000/searchpage?name=' + name+"&&count="+count)
                 .then(function (response) {
-                    console.log(response);
                     context.commit("GETPAGE", response);
                 })
                 .catch(function (err) {

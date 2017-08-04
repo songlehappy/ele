@@ -1,161 +1,166 @@
 <template>
-    <div >
+    <div>
         <div style="position: sticky;top: 0px;z-index: 1000;">
-        <header data-v-3d8ac645="" class="ElemeHeader-root_lOpLxr-_0"> 
-            <div class="ElemeHeader-wrapper_2rUT4SE_0 ElemeHeader-gradientBg_3_Tu-JD_0">
-                <div class="ElemeHeader-left_7jLVUf9_0" @click="back">
-                    <svg>
-                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-left.6f6409e"></use>
-                    </svg>
+            <header data-v-3d8ac645="" class="ElemeHeader-root_lOpLxr-_0">
+                <div class="ElemeHeader-wrapper_2rUT4SE_0 ElemeHeader-gradientBg_3_Tu-JD_0">
+                    <div class="ElemeHeader-left_7jLVUf9_0" @click="back">
+                        <svg>
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-left.6f6409e"></use>
+                        </svg>
+                    </div>
+                    <h1 class="ElemeHeader-center_2hbxfGq_0">{{this.params.target_name}}</h1>
                 </div>
-                <h1 class="ElemeHeader-center_2hbxfGq_0">{{this.params.target_name}}</h1>
-            </div>
-        </header>
-        <aside data-v-98a11d7e="" data-v-3d8ac645="" class="filter">
-            <div data-v-98a11d7e="" class="filter-header">
-                <a data-v-98a11d7e="" href="javascript:" class="filter-nav" :class="open1?'active':''" @click="getSort">
-                    <span data-v-98a11d7e="">{{kind}}</span>
-                    <svg data-v-98a11d7e="" viewBox="0 0 72 32">
-                        <path data-v-98a11d7e="" d="M36 32l36-32h-72z"></path>
-                    </svg>
-                </a>
-                <a data-v-98a11d7e="" href="javascript:" class="filter-nav" :class="open2?'active':''" @click="openKey">
-                    <span data-v-98a11d7e="">排序</span>
-                    <svg data-v-98a11d7e="" viewBox="0 0 72 32">
-                        <path data-v-98a11d7e="" d="M36 32l36-32h-72z"></path>
-                    </svg>
-                </a>
-                <a data-v-98a11d7e="" href="javascript:" class="filter-nav filter-nav-more" :class="open3?'active':''" @click="openKey1">
-                    <span data-v-98a11d7e="">筛选</span>
-                    <svg data-v-98a11d7e="" viewBox="0 0 72 32">
-                        <path data-v-98a11d7e="" d="M36 32l36-32h-72z"></path>
-                    </svg>
-                </a>
-            </div>
-            <section class="filter-extend filter-category" :class="open1?'open':''">
-                <div class="filter-scroller">
-                    <ul>
-                        <li v-for="(item,key) in shopSort" :class="key==selctK?'active':''" :key='key+"123"' @click="changeList(key)">
-                            <span>{{item.name}}</span>
-                            <span class="count">{{item.count}}</span>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li v-for="(item,key) in sortShopList" :key="'key'+key" :class="key==slectS?'active':''" style="line-height:50px" @click="changeSC(key,item.id)">
-                            <img :src="item.image_url|imgSrc">
-                            <span>{{item.name}}</span>
-                            <span class="count">{{item.count}}</span>
-                        </li>
-                    </ul>
-                </div>
-            </section>
-            <section class="filter-extend filter-sort" :class="open2?'open':''">
-                <ul data-v-fd238482="">
-                    <li data-v-fd238482="" :class="active[0]" @click="changeLi(0,'')">
-                        <svg data-v-fd238482="">
-                            <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#default"></use>
+            </header>
+            <aside data-v-98a11d7e="" data-v-3d8ac645="" class="filter">
+                <div data-v-98a11d7e="" class="filter-header">
+                    <a data-v-98a11d7e="" href="javascript:" class="filter-nav" :class="open1?'active':''" @click="getSort">
+                        <span data-v-98a11d7e="">{{kind}}</span>
+                        <svg data-v-98a11d7e="" viewBox="0 0 72 32">
+                            <path data-v-98a11d7e="" d="M36 32l36-32h-72z"></path>
                         </svg>
-                        <span data-v-fd238482="">智能排序</span>
-                        <svg data-v-fd238482="" class="selected">
-                            <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                    </a>
+                    <a data-v-98a11d7e="" href="javascript:" class="filter-nav" :class="open2?'active':''" @click="openKey">
+                        <span data-v-98a11d7e="">排序</span>
+                        <svg data-v-98a11d7e="" viewBox="0 0 72 32">
+                            <path data-v-98a11d7e="" d="M36 32l36-32h-72z"></path>
                         </svg>
-                    </li>
-                    <li data-v-fd238482="" :class="active[1]" @click="changeLi(1,5)">
-                        <svg data-v-fd238482="">
-                            <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#distance"></use>
+                    </a>
+                    <a data-v-98a11d7e="" href="javascript:" class="filter-nav filter-nav-more" :class="open3?'active':''" @click="openKey1">
+                        <span data-v-98a11d7e="">筛选</span>
+                        <svg data-v-98a11d7e="" viewBox="0 0 72 32">
+                            <path data-v-98a11d7e="" d="M36 32l36-32h-72z"></path>
                         </svg>
-                        <span data-v-fd238482="">距离最近</span>
-                        <svg data-v-fd238482="" class="selected">
-                            <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
-                        </svg>
-                    </li>
-                    <li data-v-fd238482="" :class="active[2]" @click="changeLi(2,6)">
-                        <svg data-v-fd238482="">
-                            <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#hot"></use>
-                        </svg>
-                        <span data-v-fd238482="">销量最高</span>
-                        <svg data-v-fd238482="" class="selected">
-                            <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
-                        </svg>
-                    </li>
-                    <li data-v-fd238482="" :class="active[3]" @click="changeLi(3,1)">
-                        <svg data-v-fd238482="">
-                            <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#price"></use>
-                        </svg>
-                        <span data-v-fd238482="">起送价最低</span>
-                        <svg data-v-fd238482="" class="selected">
-                            <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
-                        </svg>
-                    </li>
-                    <li data-v-fd238482="" :class="active[4]" @click="changeLi(4,2)">
-                        <svg data-v-fd238482="">
-                            <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#speed"></use>
-                        </svg>
-                        <span data-v-fd238482="">配送速度最快</span>
-                        <svg data-v-fd238482="" class="selected">
-                            <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
-                        </svg>
-                    </li>
-                    <li data-v-fd238482="" :class="active[5]" @click="changeLi(5,3)">
-                        <svg data-v-fd238482="">
-                            <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating"></use>
-                        </svg>
-                        <span data-v-fd238482="">评分最高</span>
-                        <svg data-v-fd238482="" class="selected">
-                            <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
-                        </svg>
-                    </li>
-                </ul>
-            </section>
-            <section class="filter-extend filter-more" :class="open3?'open':''">
-                <div class="filter-scroller" data-v-d7cbbe24>
-                    <dl>
-                        <dt data-v-d7cbbe24="">配送方式</dt>
-                        <dd data-v-d7cbbe24="" :class="ddactive[0]" @click="changedd(0,'delivery_mode[]=1')">
-                            <svg data-v-d7cbbe24="" class="fengniao">
-                                <use data-v-d7cbbe24="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#fengniao"></use>
-                            </svg>
-                            <svg data-v-d7cbbe24="" class="selected-icon">
-                                <use data-v-d7cbbe24="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
-                            </svg>
-                            <span data-v-d7cbbe24="">蜂鸟专送</span>
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt data-v-d7cbbe24="">商家属性 (可多选)</dt>
-                        <dd data-v-d7cbbe24="" class="" v-for="(item,index) in deliver2" :key="'deliver'+index" :class="ddactive[index+1]" @click="changedd(index+1,('support_ids[]='+item.id))">
-                            <svg data-v-d7cbbe24="" class="selected-icon">
-                                <use data-v-d7cbbe24="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
-                            </svg>
-                            <i data-v-d7cbbe24="" :style="{color:'#'+item.icon_color}">
-                                {{item.icon_name}}
-                            </i>
-                            <span data-v-d7cbbe24="">{{item.name}}</span>
-                        </dd>
-                    </dl>
-                </div>
-                <div data-v-d7cbbe24="" class="filter-btn">
-                    <a data-v-d7cbbe24="" href="javascript:" @click="clearAll">清空</a>
-                    <a data-v-d7cbbe24="" href="javascript:" @click="queryAll">
-                        确定
-                        <!---->
                     </a>
                 </div>
-            </section>
-            <section data-v-98a11d7e="" class="filter-modal" :class="openall?'open':''"></section>
-        </aside>
+                <section class="filter-extend filter-category" :class="open1?'open':''">
+                    <div class="filter-scroller">
+                        <ul>
+                            <li v-for="(item,key) in shopSort" :class="key==selctK?'active':''" :key='key+"123"' @click="changeList(key)">
+                                <span>{{item.name}}</span>
+                                <span class="count">{{item.count}}</span>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li v-for="(item,key) in sortShopList" :key="'key'+key" :class="key==slectS?'active':''" style="line-height:50px" @click="changeSC(key,item.id)">
+                                <img :src="item.image_url|imgSrc">
+                                <span>{{item.name}}</span>
+                                <span class="count">{{item.count}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section class="filter-extend filter-sort" :class="open2?'open':''">
+                    <ul data-v-fd238482="">
+                        <li data-v-fd238482="" :class="active[0]" @click="changeLi(0,'')">
+                            <svg data-v-fd238482="">
+                                <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#default"></use>
+                            </svg>
+                            <span data-v-fd238482="">智能排序</span>
+                            <svg data-v-fd238482="" class="selected">
+                                <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                            </svg>
+                        </li>
+                        <li data-v-fd238482="" :class="active[1]" @click="changeLi(1,5)">
+                            <svg data-v-fd238482="">
+                                <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#distance"></use>
+                            </svg>
+                            <span data-v-fd238482="">距离最近</span>
+                            <svg data-v-fd238482="" class="selected">
+                                <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                            </svg>
+                        </li>
+                        <li data-v-fd238482="" :class="active[2]" @click="changeLi(2,6)">
+                            <svg data-v-fd238482="">
+                                <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#hot"></use>
+                            </svg>
+                            <span data-v-fd238482="">销量最高</span>
+                            <svg data-v-fd238482="" class="selected">
+                                <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                            </svg>
+                        </li>
+                        <li data-v-fd238482="" :class="active[3]" @click="changeLi(3,1)">
+                            <svg data-v-fd238482="">
+                                <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#price"></use>
+                            </svg>
+                            <span data-v-fd238482="">起送价最低</span>
+                            <svg data-v-fd238482="" class="selected">
+                                <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                            </svg>
+                        </li>
+                        <li data-v-fd238482="" :class="active[4]" @click="changeLi(4,2)">
+                            <svg data-v-fd238482="">
+                                <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#speed"></use>
+                            </svg>
+                            <span data-v-fd238482="">配送速度最快</span>
+                            <svg data-v-fd238482="" class="selected">
+                                <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                            </svg>
+                        </li>
+                        <li data-v-fd238482="" :class="active[5]" @click="changeLi(5,3)">
+                            <svg data-v-fd238482="">
+                                <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating"></use>
+                            </svg>
+                            <span data-v-fd238482="">评分最高</span>
+                            <svg data-v-fd238482="" class="selected">
+                                <use data-v-fd238482="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                            </svg>
+                        </li>
+                    </ul>
+                </section>
+                <section class="filter-extend filter-more" :class="open3?'open':''">
+                    <div class="filter-scroller" data-v-d7cbbe24>
+                        <dl>
+                            <dt data-v-d7cbbe24="">配送方式</dt>
+                            <dd data-v-d7cbbe24="" :class="ddactive[0]" @click="changedd(0,'delivery_mode[]=1')">
+                                <svg data-v-d7cbbe24="" class="fengniao">
+                                    <use data-v-d7cbbe24="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#fengniao"></use>
+                                </svg>
+                                <svg data-v-d7cbbe24="" class="selected-icon">
+                                    <use data-v-d7cbbe24="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                                </svg>
+                                <span data-v-d7cbbe24="">蜂鸟专送</span>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt data-v-d7cbbe24="">商家属性 (可多选)</dt>
+                            <dd data-v-d7cbbe24="" class="" v-for="(item,index) in deliver2" :key="'deliver'+index" :class="ddactive[index+1]" @click="changedd(index+1,('support_ids[]='+item.id))">
+                                <svg data-v-d7cbbe24="" class="selected-icon">
+                                    <use data-v-d7cbbe24="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                                </svg>
+                                <i data-v-d7cbbe24="" :style="{color:'#'+item.icon_color}">
+                                    {{item.icon_name}}
+                                </i>
+                                <span data-v-d7cbbe24="">{{item.name}}</span>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div data-v-d7cbbe24="" class="filter-btn">
+                        <a data-v-d7cbbe24="" href="javascript:" @click="clearAll">清空</a>
+                        <a data-v-d7cbbe24="" href="javascript:" @click="queryAll">
+                            确定
+                            <!---->
+                        </a>
+                    </div>
+                </section>
+                <section data-v-98a11d7e="" class="filter-modal" :class="openall?'open':''"></section>
+            </aside>
         </div>
         <SortList></SortList>
+        <div v-show="isShow" @click="gotop">
+            <goTop></goTop>
+        </div>
     </div>
 </template>
 <script>
 import { Actionsheet } from 'mint-ui';
 import Vue from 'vue';
 import SortList from './Sortshop.vue';
+import goTop from '@/components/goTop'
 export default {
     components: {
         Actionsheet,
-        SortList
+        SortList,
+        goTop
     },
     filters: {
         imgSrc: function (src) {
@@ -188,40 +193,42 @@ export default {
             kind: "分类",
             selctK: "",
             slectS: "",
-            surportid:{}
+            surportid: {},
+            isShow: true,
+            scroll: ''
         }
     },
     methods: {
-        queryAll(){
-            var queryStr=[];
+        queryAll() {
+            var queryStr = [];
             //console.log(this.surportid);
-           for(var key in this.surportid){
-               
-                queryStr.push(this.surportid[key]);  
-           }
+            for (var key in this.surportid) {
+
+                queryStr.push(this.surportid[key]);
+            }
             // console.log(queryStr);
-           var str=queryStr.join('&');
-           if(str!=''){
-              this.$store.dispatch("storeSortKind",str);
-              console.log(str); 
-           }
-            this.open3 = this.openall = !this.open3; 
+            var str = queryStr.join('&');
+            if (str != '') {
+                this.$store.dispatch("storeSortKind", str);
+                console.log(str);
+            }
+            this.open3 = this.openall = !this.open3;
         },
-        clearAll(){
-            for(let i=0;i<this.ddactive.length;i++){
-                 Vue.set(this.ddactive, i, '');
+        clearAll() {
+            for (let i = 0; i < this.ddactive.length; i++) {
+                Vue.set(this.ddactive, i, '');
             };
-            for (var key in this.surportid){
-                 delete this.surportid[key];  
+            for (var key in this.surportid) {
+                delete this.surportid[key];
             };
-             this.open3 = this.openall = !this.open3;
+            this.open3 = this.openall = !this.open3;
         },
-        changedd(index,id) {
-            
+        changedd(index, id) {
+
             if (this.ddactive[index] == "") {
                 Vue.set(this.ddactive, index, 'selected');
-                this.surportid[index]=id;
-                
+                this.surportid[index] = id;
+
             } else {
                 Vue.set(this.ddactive, index, '');
                 delete this.surportid[index];
@@ -233,13 +240,13 @@ export default {
             this.open1 = this.open2 = this.open3 = this.openall = false;
             this.$store.dispatch("storeSortId", id);
         },
-        changeLi(item,id) {
+        changeLi(item, id) {
             //console.log(item);
             for (let i = 0; i < this.active.length; i++) {
                 i == item ? Vue.set(this.active, i, 'active') : Vue.set(this.active, i, '');
             }
             this.open1 = this.open2 = this.open3 = this.openall = false;
-            this.$store.dispatch("storeSortId",id);
+            this.$store.dispatch("storeSortId", id);
         },
         openKey() {
             this.open1 = this.open3 = false;
@@ -271,6 +278,12 @@ export default {
             else {
                 this.sortShopList = [];
             }
+        },
+        gotop() {
+            document.body.scrollTop = 0;
+        },
+        menu() {
+            this.scroll = document.body.scrollTop;
         }
     },
     computed: {
@@ -292,7 +305,18 @@ export default {
         }
     },
     mounted: function () {
+        window.addEventListener('scroll', this.menu);
+    },
+      watch: {
+    scroll: function (newVal, oldVal) {
+      if (newVal >= 700) {
+        this.isShow = true;
+      }
+      if (newVal < 700) {
+        this.isShow = false;
+      }
     }
+  }
 }
 </script>
 <style scoped>

@@ -68,17 +68,18 @@ export default {
       // keyup事件保存locallhost
       var result = this.histore.indexOf(this.searchInput)
       if (this.searchInput.trim()) {
-        // 不为空,则前往详情页面
-        this.skip(name);
-        //前往详情页之前触发销CHANGE突变
+        //跳转前清空上一次搜索获得的结果数据
         this.$store.commit('CHANGE')
         if (result == -1) {
           this.histore.unshift(this.searchInput);
           // 保存到locallhost,注意转换为json字符串
           window.localStorage.setItem('historyArr', JSON.stringify(this.histore));
         }
+        this.skip(name);
       }
+
       console.log(this.histore)
+      
     },
     skip: function (name) {
       // 跳转到搜索结果页面
