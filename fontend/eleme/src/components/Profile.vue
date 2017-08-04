@@ -1,13 +1,17 @@
 <template>
   <div>
       <Top></Top>
+      <Info></Info>
+      <Bottom></Bottom>
   </div>
 </template>
 <script>
 import Top from './login/LoginTop.vue'
+import Info from './login/LoginInformation.vue'
+import Bottom from './login/LoginBottom.vue'
 export default{
     components:{
-      Top
+      Top,Info,Bottom
     }
 }
 </script>

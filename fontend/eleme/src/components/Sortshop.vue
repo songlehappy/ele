@@ -105,6 +105,9 @@
                     </section>
                 </div>
             </li>
+            <li v-show="loaderMoreTag">
+                加载中。。。。
+            </li>
         </ul>
     </div>
 </template>
@@ -147,6 +150,7 @@ export default {
             this.$store.commit("CACS",key);
         },
         loadMore() {
+            this.$store.commit("CLMT",true)
             this.$store.dispatch('updateSortList');
         },
     },
@@ -155,6 +159,9 @@ export default {
             console.log(this.$store.state.orderShopList);
            
             return this.$store.state.orderShopList;
+        },
+        loaderMoreTag:function(){
+            return this.$store.state.lodemoreTag;
         }
     }
 }

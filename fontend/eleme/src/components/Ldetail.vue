@@ -239,7 +239,7 @@ export default {
                 i == item ? Vue.set(this.active, i, 'active') : Vue.set(this.active, i, '');
             }
             this.open1 = this.open2 = this.open3 = this.openall = false;
-            this.$store.dispatch("storeSortId",id);
+            this.$store.dispatch("shopSortDf",id);
         },
         openKey() {
             this.open1 = this.open3 = false;

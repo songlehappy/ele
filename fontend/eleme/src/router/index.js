@@ -12,6 +12,7 @@ import LDetail from '@/components/LDetail.vue'
 import Discover from '@/components/Discover'
 import Search from '@/components/Search'
 import SearchPage from '@/components/search/Searchpage'
+import Login from '@/components/login/LoginIndex'
 Vue.use(Router)
 
 export default new Router({
@@ -95,6 +96,13 @@ export default new Router({
                     redirect: "goods"
                 }
             ]
+        },
+        {
+            path: "/login",
+            name: 'Login',
+            components: {
+                Body:Login
+            }
         },
         {
             path: "*",

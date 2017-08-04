@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var https = require("https");
+var MongoClient = require("mongodb").MongoClient;
+var DB_STR = "mongodb://localhost:27017/maizuo";
+var async = require("async");
 /* GET home page. */
 router.all('*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -215,6 +218,7 @@ router.get('/kindshop', function (req, res, next) {
     var offset = req.query.offset;
     var deliver = req.query.delivery_mode;
      var id = req.query.id;
+     var order_by=req.query.order_by;
     var str = '';
     if (qstr) {
         for (var i = 0; i < qstr.length; i++) {
@@ -225,6 +229,7 @@ router.get('/kindshop', function (req, res, next) {
     }
     if (id) { str = str + '&restaurant_category_ids[]=' + id }
     if (deliver) { str = str + '&delivery_mode[]=' + deliver[0] }
+    if(order_by){str=str+"&order_by="+order_by}
     var dataStr = '';
     console.log(str);
     https.get("https://mainsite-restapi.ele.me/shopping/restaurants?latitude=22.533012&longitude=113.930475&keyword=&offset=" + offset + "&limit=20&extras[]=activities" + str, function (response) {
@@ -268,5 +273,63 @@ router.get('/searchpage', function (req, res, next) {
             console.log(err)
         })
     })
+});
+router.get("/login", function (req, res, next) {
+	var username = req.query.username;
+	var password = req.query.password;
+	var wrongMsg = { msg: "ok", islogin: false, loginmsg: "网络异常" };
+	MongoClient.connect(DB_STR, function (err, db) {
+		if (err) { res.send(wrongMsg); console.log(err) }
+		else {
+			var conn = db.collection("users");
+
+			async.waterfall([
+				function (cb) {
+					conn.find({ username: username }).count(function (err, num) {
+						if (err) {
+							cb(wrongMsg);
+						} else {
+							cb(null, num);
+						}
+					})
+				},
+				function (num, cb) {
+					console.log(num);
+					if (num) {
+						conn.find({ username: username, pass: password }).count(function (err, number) {
+							if (err) {
+								cb(wrongMsg);
+							} else {
+								if(number){
+									cb(null, { msg: "ok", islogin: true, loginmsg: "登陆成功" });
+								}
+								else{
+									cb({ msg: "ok", islogin: false, loginmsg: "密码错误" });
+								}
+							}
+						})
+					} else {
+						conn.save({username: username, pass: password}, function (err, info) {
+							if (err) {
+								cb(wrongMsg)
+							} else {
+								cb(null, { msg: "ok", islogin: true, loginmsg: "注册成功" });
+							}
+						})
+					}
+				}
+			],function(err,result){
+					if(err){
+						console.log(123);
+						res.send(err);
+						db.close();
+					}else{
+						res.send(result);
+						db.close();
+					}
+				})
+		}
+	})
+
 });
 module.exports = router;

@@ -41,10 +41,18 @@ export default new Vuex.Store({
         searchpage: [],
         sorthMthod:1,
         queryStr:'',
-        tagshopid:''
+        tagshopid:'',
+        allStr:'',
+        orederBy:'',
+        tips:'OK',
+        islogin:false,
+        lodemoreTag:false,
     },
 
     mutations: {
+        CLMT:function(state,tag){
+            state.lodemoreTag=tag;
+        },
         CHANGEKD:function(state,id){
             state.sortShopId=id;
         },
@@ -92,7 +100,9 @@ export default new Vuex.Store({
         CHANGE:function(state){
             state.searchpage=[];
         },
-       
+       CHANGETIP:function(state,tips){
+            state.tips=tips;
+       },
         //--------获取index店面信息开始----------
         getIndexShopData(state, data) {
             // console.log(data);                   //actions中  ajax请求获取的数据
@@ -177,25 +187,41 @@ export default new Vuex.Store({
         //--------对index店面信息的图片做处理结束-----------
     },
     actions: {
+        userLogin:function(context,user){
+             axios.get('http://localhost:3000/login?username='+user.username+'&password='+user.password)
+                .then(function (response) {
+                   
+                   console.log(response);
+                   context.state.tips=response.data.loginmsg;
+                   context.state.islogin=response.data.islogin;
+                })
+                .catch(function (err) {
+                    console.log(123);
+                });
+        },
         storeSortId:function(context,id){
             context.state.sortShopId=id;
             context.state.sortShopOffset=0;
             context.state.orderShopList=[];
-            context.state.sorthMthod=1;
+            context.state.sorthMthod=4;
+            context.state.allStr='id='+context.state.sortShopId+"&"+context.state.queryStr+"&order_by="+context.state.orederBy;
             context.dispatch('updateSortList');
         },
+        shopSortDf:function(context,id){
+            context.state.allStr='order_by='+id+"&"+context.state.queryStr+"&id="+context.state.sortShopId;
+            context.state.sortShopOffset=0;
+            context.state.orderShopList=[];
+            context.state.orederBy=id;
+            context.dispatch('updateSortList');
+            context.state.sorthMthod=4;
+        },
        storeSortKind:function(context,queryStr){
-            if(context.state.sortShopId==''){
-                context.state.queryStr=queryStr;
-                context.state.sorthMthod=2;
-            }else{
-                context.state.sorthMthod=3;
-                context.state.queryStr= 'id='+ context.state.sortShopId+"&"+queryStr;  
-            }
-             context.state.sortShopOffset=0;
+            context.state.queryStr=queryStr;
+            context.state.sorthMthod=4;
+            context.state.allStr=context.state.queryStr+"&order_by="+context.state.orederBy+'id='+ context.state.sortShopId;
+            context.state.sortShopOffset=0;
             context.state.orderShopList=[];
             context.dispatch('updateSortList');
-                 
        },
         updateSortList:function(context){
             var ajaxUrl='';
@@ -209,7 +235,10 @@ export default new Vuex.Store({
                     break;
                 case 3:
                     ajaxUrl='http://localhost:3000/kindshop?'+context.state.queryStr+'&offset='+context.state.sortShopOffset;
-            }
+                    break;
+                case 4:
+                    ajaxUrl='http://localhost:3000/kindshop?'+context.state.allStr;
+                }
             axios.get(ajaxUrl)
                 .then(function (response) {
                    context.state.sortShopOffset+=20;
@@ -217,7 +246,7 @@ export default new Vuex.Store({
                         response.data[i].isshow=false;
                     }
                     context.state.orderShopList=context.state.orderShopList.concat(response.data);
-                    
+                    context.commit('CLMT',false);
                 })
                 .catch(function (err) {
                     console.log(123);
